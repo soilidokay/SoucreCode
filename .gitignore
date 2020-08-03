@@ -1,0 +1,6 @@
+**/Release
+**/Debug
+**/Project2
+**/x64
+**/.vs
+**/node_modules

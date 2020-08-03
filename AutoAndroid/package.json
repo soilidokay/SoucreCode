@@ -1,0 +1,26 @@
+{
+  "name": "AutoAndroid",
+  "version": "1.0",
+  "description": "Auto Andoird",
+  "main": "index.js",
+  "author": "UnmatchedTaiNguyen",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon ./index.js",
+    "doctor": "appium-doctor --android"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4",
+    "require-from-string": "^2.0.2",
+    "webdriverio": "^6.3.6"
+  },
+  "opencv4nodejs": {
+    "disableAutoBuild": 1,
+    "opencvIncludeDir": "C:\\tools\\opencv\\build\\include",
+    "opencvLibDir": "C:\\tools\\opencv\\build\\x64\\vc14\\lib",
+    "opencvBinDir": "C:\\tools\\opencv\\build\\x64\\vc14\\bin"
+  }
+}
