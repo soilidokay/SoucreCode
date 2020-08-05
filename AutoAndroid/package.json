@@ -15,7 +15,9 @@
     "express": "^4.17.1",
     "nodemon": "^2.0.4",
     "require-from-string": "^2.0.2",
-    "webdriverio": "^6.3.6"
+    "wd": "^1.12.1",
+    "webdriverio": "^6.3.6",
+    "opencv4nodejs":"^0.1.9"
   },
   "opencv4nodejs": {
     "disableAutoBuild": 1,
