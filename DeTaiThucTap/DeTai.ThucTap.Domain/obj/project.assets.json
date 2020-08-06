@@ -817,11 +817,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DeTaiThucTap\\DeTai.ThucTap.Domain\\DeTai.ThucTap.Domain.csproj",
+      "projectUniqueName": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Domain\\DeTai.ThucTap.Domain.csproj",
       "projectName": "DeTai.ThucTap.Domain",
-      "projectPath": "D:\\DeTaiThucTap\\DeTai.ThucTap.Domain\\DeTai.ThucTap.Domain.csproj",
+      "projectPath": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Domain\\DeTai.ThucTap.Domain.csproj",
       "packagesPath": "C:\\Users\\UnmatchedTaiNguyen\\.nuget\\packages\\",
-      "outputPath": "D:\\DeTaiThucTap\\DeTai.ThucTap.Domain\\obj\\",
+      "outputPath": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\UnmatchedTaiNguyen\\AppData\\Roaming\\NuGet\\NuGet.Config",

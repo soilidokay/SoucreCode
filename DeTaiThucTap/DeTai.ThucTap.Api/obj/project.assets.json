@@ -8622,11 +8622,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DeTaiThucTap\\DeTai.ThucTap.Api\\DeTai.ThucTap.Api.csproj",
+      "projectUniqueName": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Api\\DeTai.ThucTap.Api.csproj",
       "projectName": "DeTai.ThucTap.Api",
-      "projectPath": "D:\\DeTaiThucTap\\DeTai.ThucTap.Api\\DeTai.ThucTap.Api.csproj",
+      "projectPath": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Api\\DeTai.ThucTap.Api.csproj",
       "packagesPath": "C:\\Users\\UnmatchedTaiNguyen\\.nuget\\packages\\",
-      "outputPath": "D:\\DeTaiThucTap\\DeTai.ThucTap.Api\\obj\\",
+      "outputPath": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\UnmatchedTaiNguyen\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -8642,8 +8642,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "D:\\DeTaiThucTap\\DeTai.ThucTap.Data\\DeTai.ThucTap.Data.csproj": {
-              "projectPath": "D:\\DeTaiThucTap\\DeTai.ThucTap.Data\\DeTai.ThucTap.Data.csproj"
+            "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Data\\DeTai.ThucTap.Data.csproj": {
+              "projectPath": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Data\\DeTai.ThucTap.Data.csproj"
             }
           }
         }

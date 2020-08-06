@@ -11,6 +11,7 @@ namespace DeTai.ThucTap.Domain.Entities
         public string WordVN { get; set; }
         public string Image { get; set; }
         public bool IsShare { get; set; }
+        public bool IsPublish { get; set; }
         public IEnumerable<Pronuciation> Pronuciations { get; set; }
         public IEnumerable<Phrase> Phrases { get; set; }
         public Guid VocabularyCategoryId { get; set; }

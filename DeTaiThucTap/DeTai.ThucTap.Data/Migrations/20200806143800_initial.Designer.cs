@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeTai.ThucTap.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200802053113_Migrations")]
-    partial class Migrations
+    [Migration("20200806143800_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,6 +84,194 @@ namespace DeTai.ThucTap.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.CalendarReminder", b =>
+                {
+                    b.Property<Guid>("IdLearningGoal")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsLoop")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LongTime")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte>("TableTime")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("IdLearningGoal");
+
+                    b.ToTable("CalendarReminders");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.LearningGoal", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AmountVocabulary")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LearningGoals");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.LearningGoalDetails", b =>
+                {
+                    b.Property<Guid>("IdLearningHistory")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdVocabulary")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("IdLearningHistory", "IdVocabulary")
+                        .HasAnnotation("SqlServer:Clustered", true);
+
+                    b.HasIndex("IdVocabulary");
+
+                    b.ToTable("LearningGoalDetails");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Phrase", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContentVN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sentence")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SentenceVN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("VocabularyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VocabularyId");
+
+                    b.ToTable("Phrases");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Pronuciation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LinkFile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Transcription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("VocabularyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VocabularyId");
+
+                    b.ToTable("Pronuciations");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.StatisticalLike", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("IdVocabulary")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "IdVocabulary")
+                        .HasAnnotation("SqlServer:Clustered", true);
+
+                    b.HasIndex("IdVocabulary");
+
+                    b.ToTable("StatisticalLikes");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Vocabulary", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsShare")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("VocabularyCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Word")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WordVN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VocabularyCategoryId");
+
+                    b.ToTable("Vocabularies");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.VocabularyCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsShare")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameVN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("VocabularyCategories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -215,6 +403,86 @@ namespace DeTai.ThucTap.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.CalendarReminder", b =>
+                {
+                    b.HasOne("DeTai.ThucTap.Domain.Entities.LearningGoal", "LearningGoal")
+                        .WithMany()
+                        .HasForeignKey("IdLearningGoal")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.LearningGoal", b =>
+                {
+                    b.HasOne("DeTai.ThucTap.Data.CustomEntites.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.LearningGoalDetails", b =>
+                {
+                    b.HasOne("DeTai.ThucTap.Domain.Entities.LearningGoal", "LearningHistory")
+                        .WithMany()
+                        .HasForeignKey("IdLearningHistory")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DeTai.ThucTap.Domain.Entities.Vocabulary", "Vocabulary")
+                        .WithMany()
+                        .HasForeignKey("IdVocabulary")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Phrase", b =>
+                {
+                    b.HasOne("DeTai.ThucTap.Domain.Entities.Vocabulary", "Vocabulary")
+                        .WithMany("Phrases")
+                        .HasForeignKey("VocabularyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Pronuciation", b =>
+                {
+                    b.HasOne("DeTai.ThucTap.Domain.Entities.Vocabulary", "Vocabulary")
+                        .WithMany("Pronuciations")
+                        .HasForeignKey("VocabularyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.StatisticalLike", b =>
+                {
+                    b.HasOne("DeTai.ThucTap.Domain.Entities.Vocabulary", "Vocabulary")
+                        .WithMany()
+                        .HasForeignKey("IdVocabulary")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DeTai.ThucTap.Data.CustomEntites.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Vocabulary", b =>
+                {
+                    b.HasOne("DeTai.ThucTap.Domain.Entities.VocabularyCategory", "VocabularyCategory")
+                        .WithMany()
+                        .HasForeignKey("VocabularyCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.VocabularyCategory", b =>
+                {
+                    b.HasOne("DeTai.ThucTap.Data.CustomEntites.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

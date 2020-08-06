@@ -5175,11 +5175,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DeTaiThucTap\\DeTai.ThucTap.Data\\DeTai.ThucTap.Data.csproj",
+      "projectUniqueName": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Data\\DeTai.ThucTap.Data.csproj",
       "projectName": "DeTai.ThucTap.Data",
-      "projectPath": "D:\\DeTaiThucTap\\DeTai.ThucTap.Data\\DeTai.ThucTap.Data.csproj",
+      "projectPath": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Data\\DeTai.ThucTap.Data.csproj",
       "packagesPath": "C:\\Users\\UnmatchedTaiNguyen\\.nuget\\packages\\",
-      "outputPath": "D:\\DeTaiThucTap\\DeTai.ThucTap.Data\\obj\\",
+      "outputPath": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Data\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\UnmatchedTaiNguyen\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5195,8 +5195,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "D:\\DeTaiThucTap\\DeTai.ThucTap.Domain\\DeTai.ThucTap.Domain.csproj": {
-              "projectPath": "D:\\DeTaiThucTap\\DeTai.ThucTap.Domain\\DeTai.ThucTap.Domain.csproj"
+            "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Domain\\DeTai.ThucTap.Domain.csproj": {
+              "projectPath": "E:\\SoucreCode\\DeTaiThucTap\\DeTai.ThucTap.Domain\\DeTai.ThucTap.Domain.csproj"
             }
           }
         }
