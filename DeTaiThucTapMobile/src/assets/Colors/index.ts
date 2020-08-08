@@ -1,3 +1,7 @@
 export default {
-  dasd: 'asd',
+  Lime: 'lime',
+  Blue: 'blue',
+  LightBlue: 'lightblue',
+  DarkBlue: 'darkblue',
+  White: 'white',
 };

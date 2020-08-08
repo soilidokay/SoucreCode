@@ -1,16 +1,16 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+// import {createStackNavigator} from '@react-navigation/stack';
 import React, {FC} from 'react';
-import Home from './Screens/Home';
+import {PropsApp} from './type';
+import StackNavigate from './Custom/StackNavigate';
+import {StackNavigateTheme} from 'assets/themes';
 
-const Stack = createStackNavigator();
+// const Stack = createStackNavigator();
 
-const AppNavigate: FC = () => {
+const AppNavigate: FC<PropsApp> = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen {...Home} />
-      </Stack.Navigator>
+      <StackNavigate theme={StackNavigateTheme} />
     </NavigationContainer>
   );
 };

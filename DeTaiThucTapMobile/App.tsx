@@ -13,7 +13,7 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
 import {Provider as StoreProvider} from 'react-redux';
 import store from './src/Providers/Redux';
-import AppNavigate from 'src/Providers/Navigates';
+import AppNavigate from './src/Providers/Navigates';
 const theme = {
   ...DefaultTheme,
   colors: {
