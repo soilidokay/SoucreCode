@@ -4,5 +4,5 @@ import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/ty
 
 export interface PropsHome {
   theme?: IHomeTheme;
-  navigation: StackNavigationProp<ParamListBase>;
+  navigation?: StackNavigationProp<ParamListBase>;
 }

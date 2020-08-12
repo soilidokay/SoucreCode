@@ -1,7 +1,7 @@
 import React, {useState, useRef} from 'react';
 import {IHeaderTitle, IRefHeaderTitle} from './type';
-import {Appbar} from 'react-native-paper';
 import {IParamNavigates} from 'Providers/Navigates/Params';
+import {View, Text, StyleSheet} from 'react-native';
 
 const HeaderTitle = React.forwardRef((props: IHeaderTitle, ref) => {
   const [state, setState] = useState({
@@ -16,14 +16,19 @@ const HeaderTitle = React.forwardRef((props: IHeaderTitle, ref) => {
   if (ref !== null && 'current' in ref) {
     ref.current = refOwn.current;
   }
+
   const {params, theme} = state;
   return (
-    <Appbar.Content
-      style={theme.TitleStyle}
-      title={params.Title}
-      subtitle={params.SubTitle}
-    />
+    <View style={theme.TitleStyle}>
+      <Text style={styles.title}>{params.Title}</Text>
+      {params.SubTitle && <Text>{params.SubTitle}</Text>}
+    </View>
   );
 });
-
+const styles = StyleSheet.create({
+  title: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});
 export default HeaderTitle;

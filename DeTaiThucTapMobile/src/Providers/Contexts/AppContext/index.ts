@@ -1,18 +1,17 @@
-import Context from '../Context';
 import {IRefHeaderTitle} from 'Providers/SubComponents/type';
-
-class AppContext extends Context {
+import {TAppContext} from '../type';
+import React from 'react';
+class AppContext implements TAppContext {
+  public HandleHeaderTitle?: React.RefObject<IRefHeaderTitle>;
   constructor() {
-    super();
     this.HandleHeaderTitle = undefined;
   }
-  public HandleHeaderTitle?: React.RefObject<IRefHeaderTitle>;
 
-  public setHandHeaderTitle = (Handle: React.RefObject<IRefHeaderTitle>) => {
+  public setHandHeaderTitle(Handle: React.RefObject<IRefHeaderTitle>) {
     if (this.HandleHeaderTitle === undefined) {
       this.HandleHeaderTitle = Handle;
     }
-  };
+  }
   public releaseHeaderTitle() {
     this.HandleHeaderTitle = undefined;
   }

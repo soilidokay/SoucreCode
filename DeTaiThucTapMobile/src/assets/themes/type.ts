@@ -1,5 +1,5 @@
-import {BottomTabBarOptions} from '@react-navigation/bottom-tabs/src/types';
 import {StyleViewComponent} from '../../Types';
+import {BottomTabBarOptions} from '@react-navigation/bottom-tabs/src/types';
 export interface ITabNavigateTheme {
   tabBarOptions?: BottomTabBarOptions;
 }
@@ -13,7 +13,9 @@ export interface IStackNavigateTheme {
   HeaderStyle?: StyleViewComponent;
   TitleStyle?: StyleViewComponent;
   AvatarStyle?: StyleViewComponent;
-  BackActionStyle: IBackAction;
+  LayoutUser: StyleViewComponent;
+  LayoutBack: StyleViewComponent;
+  backgroundColor: string;
 }
 
 export interface IHomeTheme {

@@ -6,16 +6,20 @@ export const TabNavigateTheme: ITabNavigateTheme = {
     activeTintColor: Colors.Lime,
     inactiveTintColor: Colors.LightBlue,
     tabStyle: {
-      backgroundColor: Colors.Blue,
+      backgroundColor: Colors.Purple,
     },
   },
 };
 
 export const StackNavigateTheme: IStackNavigateTheme = {
   HeaderStyle: {
-    backgroundColor: Colors.Blue,
+    backgroundColor: Colors.CustomGreen,
+    height: 60,
+    flexDirection: 'row',
   },
+  backgroundColor: Colors.CustomGreen,
   TitleStyle: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -26,8 +30,19 @@ export const StackNavigateTheme: IStackNavigateTheme = {
     borderWidth: 1,
     borderColor: Colors.DarkBlue,
   },
-  BackActionStyle: {
-    color: Colors.White,
-    backgroundColor: Colors.Blue,
+
+  LayoutUser: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 5,
+    backgroundColor: Colors.CustomGreen,
+    borderColor: Colors.LightGreen,
+  },
+  LayoutBack: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 5,
+    backgroundColor: 'transparent',
+    borderWidth: 0,
   },
 };
