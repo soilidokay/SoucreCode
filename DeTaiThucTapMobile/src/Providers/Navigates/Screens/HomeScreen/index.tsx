@@ -13,8 +13,8 @@ export class HomeScreen extends ScreenBase<KeyNavigate.Home, IHomeScreenProps> {
   }
 
   render() {
-    const {navigation} = this.props;
-    return <Home navigation={navigation} theme={HomeTheme} />;
+    const {navigation, route} = this.props;
+    return <Home navigation={navigation} route={route} theme={HomeTheme} />;
   }
 }
 

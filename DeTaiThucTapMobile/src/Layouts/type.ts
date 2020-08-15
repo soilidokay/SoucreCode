@@ -8,3 +8,12 @@ export interface LayoutCircleProps {
 export interface LayoutCircleState {
   weight: number;
 }
+export interface ContainerVewProps {
+  style?: StyleViewComponent;
+  Horizontal?: boolean;
+  Flex: number;
+}
+
+export interface IContainerBox {
+  style?: StyleViewComponent;
+}

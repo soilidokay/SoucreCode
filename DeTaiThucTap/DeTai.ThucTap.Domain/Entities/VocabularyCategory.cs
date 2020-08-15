@@ -16,6 +16,5 @@ namespace DeTai.ThucTap.Domain.Entities
         public string NameVN { get; set; }
         public bool IsShare { get; set; }
         public bool IsPublish { get; set; }
-
     }
 }

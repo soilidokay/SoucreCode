@@ -1,3 +1,5 @@
+import {GroupCategory} from 'Providers/Models/type';
+
 export interface IParamNavigates {
   Title?: string;
   SubTitle?: string;
@@ -10,6 +12,9 @@ export interface IParamExtendFeature extends IParamNavigates {}
 
 export interface IParamAboutScreen extends IParamNavigates {}
 export interface IParamTimeTableScreen extends IParamNavigates {}
+export interface IParamGroupDetailScreen extends IParamNavigates {
+  GroupCategory: GroupCategory;
+}
 
 export declare type ParamListNavigateBase = {
   Default: IParamNavigates;
@@ -25,6 +30,7 @@ export declare type ParamListTabNavigate = {
 export declare type ParamStackNavigateList = {
   RootApp: IParamRootApp;
   ExtendFeature: IParamExtendFeature;
+  GroupDetail: IParamGroupDetailScreen;
 } & ParamListNavigateBase;
 
 export declare type ParamNavigate = ParamListNavigateBase &
@@ -39,4 +45,5 @@ export enum KeyNavigate {
   About = 'About',
   TimeTable = 'TimeTable',
   ExtendFeature = 'ExtendFeature',
+  GroupDetail = 'GroupDetail',
 }

@@ -10,4 +10,3 @@ export interface ButtonIconProps extends TouchableOpacityProperties {
   colorIcon?: string;
   IconComponent?: TIconComponent;
 }
-export interface ButtonIconState {}

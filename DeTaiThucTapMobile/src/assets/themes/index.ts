@@ -32,15 +32,11 @@ export const StackNavigateTheme: IStackNavigateTheme = {
   },
 
   LayoutUser: {
-    justifyContent: 'center',
-    alignItems: 'center',
     margin: 5,
     backgroundColor: Colors.CustomGreen,
     borderColor: Colors.LightGreen,
   },
   LayoutBack: {
-    justifyContent: 'center',
-    alignItems: 'center',
     margin: 5,
     backgroundColor: 'transparent',
     borderWidth: 0,

@@ -11,6 +11,8 @@ export interface IScreenPropsBase<RouteName extends keyof ParamNavigate>
   extends PropsBase<RouteName> {}
 
 export interface IHomeScreenProps extends IScreenPropsBase<KeyNavigate.Home> {}
+export interface IGroupDetailScreenProps
+  extends IScreenPropsBase<KeyNavigate.GroupDetail> {}
 
 export interface IExtendFeatureScreenProps
   extends IScreenPropsBase<KeyNavigate.ExtendFeature> {}

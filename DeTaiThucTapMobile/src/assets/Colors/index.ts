@@ -11,4 +11,10 @@ export default {
   CustomBlue: '#304ffe',
   CustomGreen: '#06623b',
   CustomLightGreen: '#ccff90',
+  LightGreen_A5: '#ccff90b3',
+  CustomWhite: '#fafafa',
+  Gray: 'gray',
+  LightGray: 'lightgray',
+  CustomLightBlue: '#e0f2f1',
+  Green: 'green',
 };

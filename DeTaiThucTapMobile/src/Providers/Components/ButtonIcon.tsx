@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {ButtonIconProps} from './type';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import {StyleViewComponent} from 'Types';
 
@@ -10,6 +9,7 @@ const ButtonIcon: FC<ButtonIconProps> = (props) => {
   const IconComponent = props.IconComponent ?? FontAwesome5Icon;
   return (
     <TouchableOpacity
+      delayPressIn={200}
       {...props}
       style={[ConfigStyle, styles.container, props.style]}>
       <IconComponent
