@@ -11,6 +11,7 @@ export interface HoverTabProps {
   width: number;
   AmountTabBar: number;
   backgroundColor?: string;
+  height: number;
 }
 export interface HoverTabState {
   index: number;
@@ -33,8 +34,11 @@ export interface TabBarProps {
   data?: {item: Route<string>; options?: TabNavigationOptions};
   style?: StyleViewComponent;
   IconComponent?: TIconComponent;
+  isActive?: boolean;
 }
-export interface TabBarState {}
+export interface TabBarState {
+  isActive: boolean;
+}
 
 export interface TabNavigateProps
   extends StackScreenProps<KeyNavigate.Default> {

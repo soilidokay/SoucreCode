@@ -17,4 +17,5 @@ export default {
   LightGray: 'lightgray',
   CustomLightBlue: '#e0f2f1',
   Green: 'green',
+  Orange: 'orange',
 };

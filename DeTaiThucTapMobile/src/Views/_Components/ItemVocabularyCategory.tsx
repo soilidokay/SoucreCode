@@ -7,12 +7,13 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import {ItemVocabularyCategoryProps} from './types';
-import Colors from 'assets/Colors';
-import ContainerBox from 'Layouts/ContainerBox';
-import LayoutCircle from 'Layouts/LayoutCircle';
-import ButtonIcon from 'Providers/Components/ButtonIcon';
+import {ItemVocabularyCategoryProps} from '../_Layouts/types';
+import Colors from '../../assets/Colors';
+import ContainerBox from '../../Layouts/ContainerBox';
+import LayoutCircle from '../../Layouts/LayoutCircle';
+import ButtonIcon from '../../Providers/Components/ButtonIcon';
 import Entypo from 'react-native-vector-icons/Entypo';
+
 const {width: WidthScreen} = Dimensions.get('window');
 const WidthImage = WidthScreen / 6;
 const ItemVocabularyCategory: FC<ItemVocabularyCategoryProps> = (props) => {

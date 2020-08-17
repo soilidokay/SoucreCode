@@ -3,7 +3,7 @@ import {IGroupDetail} from './type';
 import {VocabularyCategory} from 'Providers/Models/type';
 import {Sleep} from 'Commons';
 
-class HomeService extends ServiceBase implements IGroupDetail {
+class GroupDetailService extends ServiceBase implements IGroupDetail {
   GetVocabularyCategories = async () =>
     // param: IVocabularyCategoriesParamRequest,
     {
@@ -50,4 +50,4 @@ class HomeService extends ServiceBase implements IGroupDetail {
     };
 }
 
-export default new HomeService();
+export default new GroupDetailService();

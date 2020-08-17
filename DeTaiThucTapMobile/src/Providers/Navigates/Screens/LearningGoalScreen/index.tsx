@@ -1,16 +1,13 @@
 import React from 'react';
-import {Text, View} from 'react-native';
 import ScreenBase from '../ScreenBase';
 import {KeyNavigate} from 'Providers/Navigates/Params';
 import {IScreenComponent} from 'Providers/Navigates/type';
+import LearningGoal from 'Views/LearningGoal';
 
 class LearningGoalScreen extends ScreenBase<KeyNavigate.LearningGoal> {
   render() {
-    return (
-      <View>
-        <Text> textInComponent </Text>
-      </View>
-    );
+    const {navigation, route} = this.props;
+    return <LearningGoal navigation={navigation} route={route} />;
   }
 }
 

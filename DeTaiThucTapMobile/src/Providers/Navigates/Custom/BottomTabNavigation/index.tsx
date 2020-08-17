@@ -47,12 +47,16 @@ const BottomTabNavigation: React.FC<OwnType.TabNavigateProps> = (props) => {
     <NavigationHelpersContext.Provider value={navigation}>
       <View style={styles.container}>
         {descriptors[state.routes[state.index].key].render()}
+        <View style={StyleSheet.absoluteFill} pointerEvents={'box-none'}>
+          <View style={styles.WrapTabBar} pointerEvents={'box-none'}>
+            <CustomTarNavigate
+              onPressTab={onPressTab}
+              descriptors={descriptors}
+              routes={state.routes}
+            />
+          </View>
+        </View>
       </View>
-      <CustomTarNavigate
-        onPressTab={onPressTab}
-        descriptors={descriptors}
-        routes={state.routes}
-      />
     </NavigationHelpersContext.Provider>
   );
 };
@@ -64,4 +68,10 @@ export const createMyNavigator = createNavigatorFactory<
   typeof BottomTabNavigation
 >(BottomTabNavigation);
 
-const styles = StyleSheet.create({container: {flex: 1}});
+const styles = StyleSheet.create({
+  container: {flex: 1},
+  WrapTabBar: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+});

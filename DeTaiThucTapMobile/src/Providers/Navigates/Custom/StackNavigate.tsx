@@ -10,9 +10,11 @@ import HeaderTitle from 'Providers/SubComponents/HeaderTitle';
 import LayoutCircle from 'Layouts/LayoutCircle';
 import ButtonIcon from 'Providers/Components/ButtonIcon';
 import GroupDetail from '../Screens/GroupDetail';
+import CategoryDetailScreen from '../Screens/CategoryDetailScreen';
 import ExtendFeature from '../Screens/ExtendFeature';
 import Colors from 'assets/Colors';
 import ContainerBox from 'Layouts/ContainerBox';
+import LearningGoalDetail from '../Screens/LearningGoalDetail';
 const Stack = createStackNavigator<ParamStackNavigateList>();
 const StackNavigate: FC<StackNavigateProps<KeyNavigate.Default>> = (props) => {
   const {theme} = props;
@@ -63,6 +65,8 @@ const StackNavigate: FC<StackNavigateProps<KeyNavigate.Default>> = (props) => {
       <Stack.Screen {...RootApp} />
       <Stack.Screen {...ExtendFeature} />
       <Stack.Screen {...GroupDetail} />
+      <Stack.Screen {...CategoryDetailScreen} />
+      <Stack.Screen {...LearningGoalDetail} />
     </Stack.Navigator>
   );
 };

@@ -4,7 +4,7 @@ import {
   ContentCategoryProps,
   FlatListContentCategory,
   FlatListContentCategoryHomeProp,
-} from './types';
+} from '../_Layouts/types';
 import ItemVocabulary from './ItemVocabulary';
 
 export class ContentCategory extends PureComponent<ContentCategoryProps> {
@@ -12,15 +12,22 @@ export class ContentCategory extends PureComponent<ContentCategoryProps> {
   constructor(props: ContentCategoryProps) {
     super(props);
     this.ConfigFlatList = {
-      renderItem: ({item}) => {
-        return <ItemVocabulary item={item} />;
+      renderItem: ({item, index}) => {
+        return props.renderItem(item, index);
       },
       data: props.data,
       keyExtractor: (item) => {
         return item.Id;
       },
+      showsVerticalScrollIndicator: false,
     };
   }
+  static defaultProps: ContentCategoryProps = {
+    data: [],
+    renderItem: (item) => {
+      return <ItemVocabulary item={item} />;
+    },
+  };
   render() {
     return <FlatListContentCategory {...this.ConfigFlatList} />;
   }

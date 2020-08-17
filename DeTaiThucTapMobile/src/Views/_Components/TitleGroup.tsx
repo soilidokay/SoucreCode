@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {TitleGroupProps} from './types';
+import {TitleGroupProps} from '../_Layouts/types';
 import Colors from 'assets/Colors';
 import ContainerBox from 'Layouts/ContainerBox';
 
@@ -11,14 +11,16 @@ const TitleGroup: FC<TitleGroupProps> = (props) => {
         <Text style={styles.title}>{props.children}</Text>
       </View>
       <View style={styles.WrapAction}>
-        <TouchableOpacity onPress={props.onPressMore} style={styles.ButtonAll}>
-          <Text style={styles.TextBtnAll}>More</Text>
+        <TouchableOpacity onPress={props.onPress} style={styles.ButtonAll}>
+          <Text style={styles.TextBtnAll}>{props.ActionName}</Text>
         </TouchableOpacity>
       </View>
     </ContainerBox>
   );
 };
-
+TitleGroup.defaultProps = {
+  ActionName: 'Show All',
+};
 export default TitleGroup;
 
 const styles = StyleSheet.create({
@@ -43,14 +45,14 @@ const styles = StyleSheet.create({
   },
   WrapAction: {
     flex: 20,
+    borderLeftWidth: 1,
+    borderColor: Colors.LightGreen,
   },
   ButtonAll: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
-    paddingRight: 10,
-    borderLeftWidth: 1,
-    borderColor: Colors.LightGreen,
+
     marginVertical: 5,
     minWidth: 30,
   },

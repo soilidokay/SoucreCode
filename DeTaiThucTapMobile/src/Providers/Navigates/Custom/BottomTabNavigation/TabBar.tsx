@@ -9,6 +9,9 @@ export default class TabBar extends PureComponent<TabBarProps, TabBarState> {
     super(props);
     this.GetIndex = this.GetIndex.bind(this);
     this.GetContent = this.GetContent.bind(this);
+    this.state = {
+      isActive: props.isActive ?? false,
+    };
   }
   static defaultProps: TabBarProps = {
     index: 0,
@@ -29,6 +32,9 @@ export default class TabBar extends PureComponent<TabBarProps, TabBarState> {
   GetContent = () => {
     return this.content;
   };
+  setActive(isActive: boolean) {
+    this.setState({isActive});
+  }
   GetOption = () => this.props.data?.options;
   render = () => {
     const {options, item} = this.props.data ?? {};
@@ -47,8 +53,10 @@ export default class TabBar extends PureComponent<TabBarProps, TabBarState> {
         onPress={() => {
           this.props.onPress(this, this.props.index);
         }}>
-        <View style={[styles.container, this.props.style]}>
-          <View style={styles.Content}>{this.content}</View>
+        <View style={[styles.container]}>
+          <View style={styles.Content}>
+            {this.state.isActive === true ? <></> : this.content}
+          </View>
           <View style={styles.wrapText}>
             <Text style={styles.text}>{options?.title ?? item?.name}</Text>
           </View>

@@ -3,6 +3,7 @@ import {TAppContext} from '../type';
 import React from 'react';
 class AppContext implements TAppContext {
   public HandleHeaderTitle?: React.RefObject<IRefHeaderTitle>;
+  public HeightTabNavigate?: number;
   constructor() {
     this.HandleHeaderTitle = undefined;
   }

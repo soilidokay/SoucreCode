@@ -30,6 +30,7 @@ function HocService<ComponentProps, ParamRequest = {} | null>(
     HocComponentState
   > {
     private isMount = false;
+    private Timer: NodeJS.Timeout;
     constructor(props: HocComponentProps<ComponentProps, ParamRequest>) {
       super(props);
       this.state = {
@@ -37,9 +38,11 @@ function HocService<ComponentProps, ParamRequest = {} | null>(
         status: HocComponentStatus.Loading,
       };
       this.isMount = true;
+      this.Timer = setTimeout(() => {}, 0);
     }
     componentWillUnmount() {
       this.isMount = false;
+      clearTimeout(this.Timer);
     }
     UpdateStatus(status: HocComponentStatus, data: any[]) {
       if (!this.isMount) {
@@ -47,13 +50,16 @@ function HocService<ComponentProps, ParamRequest = {} | null>(
       }
       this.setState({status, data});
     }
-    componentDidMount = async () => {
-      if (option) {
-        const data = await Promise.all(
-          option.ActionService.map((action) => action()),
-        );
-        this.UpdateStatus(HocComponentStatus.Loaded, data);
-      }
+    componentDidMount = () => {
+      clearTimeout(this.Timer);
+      this.Timer = setTimeout(async () => {
+        if (option) {
+          const data = await Promise.all(
+            option.ActionService.map((action) => action()),
+          );
+          this.UpdateStatus(HocComponentStatus.Loaded, data);
+        }
+      }, 200);
     };
     render() {
       const {status} = this.state;

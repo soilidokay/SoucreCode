@@ -4,11 +4,9 @@ import {
   FlatListContentGroup,
   FlatListContentGroupProp,
   ContentGroupProps,
-} from './types';
-import ItemVocabularyCategory from './ItemVocabularyCategory';
+} from '../_Layouts/types';
 import {View, StyleSheet} from 'react-native';
 import {VocabularyCategory} from 'Providers/Models/type';
-
 export class ContentGroup extends PureComponent<ContentGroupProps> {
   private ConfigFlatList: FlatListContentGroupProp;
   constructor(props: ContentGroupProps) {
@@ -21,13 +19,13 @@ export class ContentGroup extends PureComponent<ContentGroupProps> {
         if (index === props.data.length - 1) {
           return this.renderLastItem(item);
         }
-        return (
-          <ItemVocabularyCategory
-            onPressAddToList={props.onPressAddToList}
-            onPress={props.onPressItem}
-            item={item}
-          />
-        );
+        return this.props.RenderItem(item, index);
+
+        // <ItemVocabularyCategory
+        //   onPressAddToList={props.onPressAddToList}
+        //   onPress={() => props.onPressItem(item)}
+        //   item={item}
+        // />
       },
       data: props.data,
       keyExtractor: (item) => {
@@ -36,20 +34,12 @@ export class ContentGroup extends PureComponent<ContentGroupProps> {
       numColumns: 2,
     };
   }
-  renderLastItem = (item: VocabularyCategory | null) => {
+  renderLastItem = (item?: VocabularyCategory) => {
     return this.props.data.length % 2 === 0 ? (
-      <ItemVocabularyCategory
-        onPressAddToList={this.props.onPressAddToList}
-        onPress={this.props.onPressItem}
-        item={item}
-      />
+      this.props.RenderItem(item)
     ) : (
       <>
-        <ItemVocabularyCategory
-          onPressAddToList={this.props.onPressAddToList}
-          onPress={this.props.onPressItem}
-          item={item}
-        />
+        {this.props.RenderItem(item)}
         <View style={styles.EmptyItem} />
       </>
     );

@@ -47,14 +47,17 @@ class HomeService extends ServiceBase implements IHomeService {
       {
         Name: 'System',
         VocabularyCategories: dataVocab,
+        IsOwner: false,
       },
       {
         Name: 'Owner',
         VocabularyCategories: dataVocab,
+        IsOwner: true,
       },
       {
         Name: 'Other',
         VocabularyCategories: dataVocab,
+        IsOwner: false,
       },
     ];
     return data;

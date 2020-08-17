@@ -20,6 +20,12 @@ export interface IExtendFeatureScreenProps
 export interface IRootAppScreenProps
   extends IScreenPropsBase<KeyNavigate.RootApp> {}
 
+export interface ICategoryDetailScreenProps
+  extends IScreenPropsBase<KeyNavigate.CategoryDetail> {}
+
+export interface ILearningGoalDetailScreenProps
+  extends IScreenPropsBase<KeyNavigate.LearningGoalDetail> {}
+
 export declare type EventNavigateMap = StackNavigationEventMap &
   EventMapCore<StackNavigationState>;
 export declare type EventListenerCallbackType<

@@ -22,5 +22,10 @@ export interface VocabularyCategory {
 
 export interface GroupCategory {
   Name: string;
+  IsOwner: boolean;
   VocabularyCategories: VocabularyCategory[];
+}
+
+export interface LearningGoal {
+  Name: string;
 }

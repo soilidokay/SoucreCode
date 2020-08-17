@@ -1,9 +1,9 @@
 import React, {PureComponent} from 'react';
-import {View, Animated, StyleSheet} from 'react-native';
+import {View, Animated, StyleSheet, Dimensions} from 'react-native';
 import * as Shape from 'd3-shape';
 import {HoverTabProps, HoverTabState} from './type';
 import Svg, {Path} from 'react-native-svg';
-
+const {width: WidthScreen} = Dimensions.get('window');
 export class HoverTab extends PureComponent<HoverTabProps, HoverTabState> {
   private ValueAnimated: Animated.AnimatedValue;
   private ValueAnimatedTab: Animated.AnimatedValue;
@@ -17,15 +17,14 @@ export class HoverTab extends PureComponent<HoverTabProps, HoverTabState> {
     };
     this.ValueAnimated = new Animated.Value(this.state.index);
     this.ValueAnimatedTab = new Animated.Value(0);
-
-    const width = props.width || 105;
-    const height = (width * 3) / 5;
+    const {width, height} = props;
     const inputRange = [];
     const outputRange = [];
-
+    const WidthStart = WidthScreen - width / 2;
+    const WidthEnd = WidthStart + width;
     for (let i = 0; i < props.AmountTabBar; i++) {
       inputRange.push(i);
-      outputRange.push(i * width);
+      outputRange.push(-WidthStart + i * width);
     }
 
     this.Config = {
@@ -34,13 +33,15 @@ export class HoverTab extends PureComponent<HoverTabProps, HoverTabState> {
       ShapeBorder: Shape.line()
         .x((d) => d[0])
         .y((d) => d[1])
-        .curve(Shape.curveBundle)([
+        .curve(Shape.curveCatmullRomClosed)([
         [0, 0],
-        [width * 0.1, height * 0.1],
-        [width * 0.15, height * 0.9],
-        [width - width * 0.15, height * 0.9],
-        [width - width * 0.1, height * 0.1],
-        [width, 0],
+        [0, height],
+        [2 * WidthScreen, height],
+        [2 * WidthScreen, 0],
+        [WidthEnd, 0],
+        [WidthEnd - width * 0.3, height * 0.55],
+        [WidthStart + width * 0.3, height * 0.55],
+        [WidthStart, 0],
       ]),
       StyleAnimated: {
         transform: [
@@ -70,7 +71,11 @@ export class HoverTab extends PureComponent<HoverTabProps, HoverTabState> {
     };
     this.SetActive = this.SetActive.bind(this);
   }
-
+  static defaultProps: HoverTabProps = {
+    width: 105,
+    AmountTabBar: 4,
+    height: 63,
+  };
   /**
    * Athor: Unmatched Tai Nguyen - Create : 12 /08 /2019 - 23 :28 :12
    *
@@ -78,7 +83,6 @@ export class HoverTab extends PureComponent<HoverTabProps, HoverTabState> {
   SetActive = (index: number, content: JSX.Element) => {
     this.setState({index, content});
   };
-
   componentDidUpdate() {
     if (this.prevIndex === this.state.index) {
       return;
@@ -100,27 +104,23 @@ export class HoverTab extends PureComponent<HoverTabProps, HoverTabState> {
     ]).start();
   }
   render() {
-    let {
-      height,
-      width,
-      ShapeBorder,
-      StyleAnimated,
-      StyleAnimatedTab,
-    } = this.Config;
+    let {height, ShapeBorder, StyleAnimated, StyleAnimatedTab} = this.Config;
 
     return (
-      <Animated.View style={StyleAnimated}>
-        <Svg height={height} width={width}>
-          <Path d={ShapeBorder} fill={'white'} />
+      <Animated.View style={StyleAnimated} pointerEvents={'box-none'}>
+        <Svg pointerEvents={'box-none'} height={height} width={WidthScreen * 2}>
+          <Path d={ShapeBorder} fill={this.props.backgroundColor} />
         </Svg>
-        <View style={styles.absolute}>
-          <Animated.View style={[styles.containerContent, StyleAnimatedTab]}>
+        <View style={styles.absolute} pointerEvents={'box-none'}>
+          <Animated.View
+            pointerEvents={'box-none'}
+            style={[styles.containerContent, StyleAnimatedTab]}>
             <View
               style={[
                 styles.content,
                 {
-                  height: height * 0.9,
-                  width: height,
+                  height: height * 0.8,
+                  width: height * 0.8,
                   borderRadius: height,
                   backgroundColor: this.props.backgroundColor,
                 },
@@ -142,8 +142,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
-    flex: 1,
-    backgroundColor: 'lime',
     justifyContent: 'center',
     alignItems: 'center',
   },
