@@ -11,7 +11,7 @@ namespace WebApplication1.Migrations
                 name: "CategoryType",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true)
                 },
@@ -24,7 +24,7 @@ namespace WebApplication1.Migrations
                 name: "ContentType",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     Name = table.Column<string>(nullable: false),
                     Desciption = table.Column<string>(nullable: true),
                     IconName = table.Column<string>(nullable: true),
@@ -39,7 +39,7 @@ namespace WebApplication1.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
                 },
@@ -52,7 +52,7 @@ namespace WebApplication1.Migrations
                 name: "Sprint",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
                 },
@@ -65,7 +65,7 @@ namespace WebApplication1.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     UserName = table.Column<string>(nullable: true),
                     PassWord = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
@@ -83,12 +83,14 @@ namespace WebApplication1.Migrations
                 name: "Project",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     UrlImage = table.Column<string>(nullable: true),
                     UserCreatedId = table.Column<Guid>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false)
+                    IsActive = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())")
                 },
                 constraints: table =>
                 {
@@ -105,13 +107,13 @@ namespace WebApplication1.Migrations
                 name: "UserRole",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     UserId = table.Column<Guid>(nullable: false),
                     RoleId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRole", x => new { x.RoleId, x.UserId })
-                        .Annotation("SqlServer:Clustered", true);
+                    table.PrimaryKey("PK_UserRole", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserRole_Role_RoleId",
                         column: x => x.RoleId,
@@ -127,7 +129,7 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "contentTypeDetail",
+                name: "ContentTypeDetail",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -136,15 +138,15 @@ namespace WebApplication1.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_contentTypeDetail", x => x.Id);
+                    table.PrimaryKey("PK_ContentTypeDetail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_contentTypeDetail_ContentType_ContentTypeId",
+                        name: "FK_ContentTypeDetail_ContentType_ContentTypeId",
                         column: x => x.ContentTypeId,
                         principalTable: "ContentType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_contentTypeDetail_Project_ProjectId",
+                        name: "FK_ContentTypeDetail_Project_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Project",
                         principalColumn: "Id",
@@ -155,24 +157,22 @@ namespace WebApplication1.Migrations
                 name: "Issue",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     Summary = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     ProjectId = table.Column<Guid>(nullable: false),
                     SprintId = table.Column<Guid>(nullable: false),
                     IssueParentId = table.Column<Guid>(nullable: true),
                     UserCreatedId = table.Column<Guid>(nullable: false),
+                    UserCreatedId1 = table.Column<Guid>(nullable: true),
                     AssigneeId = table.Column<Guid>(nullable: true),
-                    IsActive = table.Column<bool>(nullable: false)
+                    IsActive = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Issue", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Issue_User_AssigneeId",
-                        column: x => x.AssigneeId,
-                        principalTable: "User",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Issue_Issue_IssueParentId",
                         column: x => x.IssueParentId,
@@ -196,19 +196,25 @@ namespace WebApplication1.Migrations
                         column: x => x.UserCreatedId,
                         principalTable: "User",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Issue_User_UserCreatedId1",
+                        column: x => x.UserCreatedId1,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ProjectMember",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
+                    UserRoleId = table.Column<Guid>(nullable: false),
                     ProjectId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectMember", x => new { x.UserId, x.ProjectId })
-                        .Annotation("SqlServer:Clustered", true);
+                    table.PrimaryKey("PK_ProjectMember", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProjectMember_Project_ProjectId",
                         column: x => x.ProjectId,
@@ -216,9 +222,9 @@ namespace WebApplication1.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProjectMember_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
+                        name: "FK_ProjectMember_UserRole_UserRoleId",
+                        column: x => x.UserRoleId,
+                        principalTable: "UserRole",
                         principalColumn: "Id");
                 });
 
@@ -226,41 +232,36 @@ namespace WebApplication1.Migrations
                 name: "IssueType",
                 columns: table => new
                 {
-                    ContentTypeDetailId = table.Column<Guid>(nullable: false),
-                    IssueId = table.Column<Guid>(nullable: false)
+                    IssueId = table.Column<Guid>(nullable: false),
+                    ContentTypeDetailId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IssueType", x => new { x.ContentTypeDetailId, x.IssueId })
+                    table.PrimaryKey("PK_IssueType", x => new { x.IssueId, x.ContentTypeDetailId })
                         .Annotation("SqlServer:Clustered", true);
                     table.ForeignKey(
-                        name: "FK_IssueType_contentTypeDetail_ContentTypeDetailId",
+                        name: "FK_IssueType_ContentTypeDetail_ContentTypeDetailId",
                         column: x => x.ContentTypeDetailId,
-                        principalTable: "contentTypeDetail",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "ContentTypeDetail",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_IssueType_Issue_IssueId",
                         column: x => x.IssueId,
                         principalTable: "Issue",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_contentTypeDetail_ProjectId",
-                table: "contentTypeDetail",
+                name: "IX_ContentTypeDetail_ProjectId",
+                table: "ContentTypeDetail",
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_contentTypeDetail_ContentTypeId_ProjectId",
-                table: "contentTypeDetail",
+                name: "IX_ContentTypeDetail_ContentTypeId_ProjectId",
+                table: "ContentTypeDetail",
                 columns: new[] { "ContentTypeId", "ProjectId" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Issue_AssigneeId",
-                table: "Issue",
-                column: "AssigneeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Issue_IssueParentId",
@@ -283,9 +284,14 @@ namespace WebApplication1.Migrations
                 column: "UserCreatedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IssueType_IssueId",
+                name: "IX_Issue_UserCreatedId1",
+                table: "Issue",
+                column: "UserCreatedId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IssueType_ContentTypeDetailId",
                 table: "IssueType",
-                column: "IssueId");
+                column: "ContentTypeDetailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Project_UserCreatedId",
@@ -298,9 +304,33 @@ namespace WebApplication1.Migrations
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProjectMember_UserRoleId_ProjectId",
+                table: "ProjectMember",
+                columns: new[] { "UserRoleId", "ProjectId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Role_Name",
+                table: "Role",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_UserName",
+                table: "User",
+                column: "UserName",
+                unique: true,
+                filter: "[UserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRole_UserId",
                 table: "UserRole",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_RoleId_UserId",
+                table: "UserRole",
+                columns: new[] { "RoleId", "UserId" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -315,16 +345,13 @@ namespace WebApplication1.Migrations
                 name: "ProjectMember");
 
             migrationBuilder.DropTable(
-                name: "UserRole");
-
-            migrationBuilder.DropTable(
-                name: "contentTypeDetail");
+                name: "ContentTypeDetail");
 
             migrationBuilder.DropTable(
                 name: "Issue");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "UserRole");
 
             migrationBuilder.DropTable(
                 name: "ContentType");
@@ -334,6 +361,9 @@ namespace WebApplication1.Migrations
 
             migrationBuilder.DropTable(
                 name: "Sprint");
+
+            migrationBuilder.DropTable(
+                name: "Role");
 
             migrationBuilder.DropTable(
                 name: "User");

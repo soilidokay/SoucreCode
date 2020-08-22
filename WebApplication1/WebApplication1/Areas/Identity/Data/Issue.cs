@@ -30,6 +30,8 @@ namespace WebApplication1.Areas.Identity.Data
         [ForeignKey("AssigneeId")]
         public User Assignee { get; set; }
         public bool IsActive { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
     }
 }

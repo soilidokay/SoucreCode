@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Areas.Identity.Data;
 
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200822164601_choi")]
+    partial class choi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,22 +155,19 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Areas.Identity.Data.IssueType", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("IssueId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ContentTypeDetailId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IssueId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("IssueId", "ContentTypeDetailId")
+                        .HasAnnotation("SqlServer:Clustered", true);
 
                     b.HasIndex("ContentTypeDetailId");
-
-                    b.HasIndex("IssueId", "ContentTypeDetailId")
-                        .IsUnique();
 
                     b.ToTable("IssueType");
                 });

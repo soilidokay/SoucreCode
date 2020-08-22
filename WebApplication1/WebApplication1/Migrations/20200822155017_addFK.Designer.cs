@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Areas.Identity.Data;
 
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200822155017_addFK")]
+    partial class addFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,8 +74,7 @@ namespace WebApplication1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ContentTypeId")
                         .HasColumnType("uniqueidentifier");
@@ -153,22 +154,16 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Areas.Identity.Data.IssueType", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("IssueId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ContentTypeDetailId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IssueId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
+                    b.HasKey("IssueId", "ContentTypeDetailId")
+                        .HasAnnotation("SqlServer:Clustered", true);
 
                     b.HasIndex("ContentTypeDetailId");
-
-                    b.HasIndex("IssueId", "ContentTypeDetailId")
-                        .IsUnique();
 
                     b.ToTable("IssueType");
                 });
@@ -230,8 +225,7 @@ namespace WebApplication1.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("UserRoleId", "ProjectId")
-                        .IsUnique();
+                    b.HasIndex("UserRoleId", "ProjectId");
 
                     b.ToTable("ProjectMember");
                 });
@@ -330,8 +324,7 @@ namespace WebApplication1.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("RoleId", "UserId")
-                        .IsUnique();
+                    b.HasIndex("RoleId", "UserId");
 
                     b.ToTable("UserRole");
                 });

@@ -18,6 +18,8 @@ namespace WebApplication1.Areas.Identity.Data
         [ForeignKey("UserCreatedId")]
         public User UserCreated { get; set; }
         public bool IsActive { get; set; }
+		public DateTime CreatedAt { get; set; }
+		public DateTime UpdatedAt { get; set; }
 
-    }
+	}
 }

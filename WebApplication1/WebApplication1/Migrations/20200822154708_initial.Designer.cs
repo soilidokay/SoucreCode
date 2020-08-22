@@ -10,7 +10,7 @@ using WebApplication1.Areas.Identity.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20200818071915_initial")]
+    [Migration("20200822154708_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,8 @@ namespace WebApplication1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -43,7 +44,8 @@ namespace WebApplication1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<string>("Desciption")
                         .HasColumnType("nvarchar(max)");
@@ -82,17 +84,23 @@ namespace WebApplication1.Migrations
                     b.HasIndex("ContentTypeId", "ProjectId")
                         .IsUnique();
 
-                    b.ToTable("contentTypeDetail");
+                    b.ToTable("ContentTypeDetail");
                 });
 
             modelBuilder.Entity("WebApplication1.Areas.Identity.Data.Issue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<Guid?>("AssigneeId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -113,12 +121,18 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
+
                     b.Property<Guid>("UserCreatedId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<Guid?>("UserCreatedId1")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("AssigneeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("IssueParentId");
 
@@ -128,21 +142,23 @@ namespace WebApplication1.Migrations
 
                     b.HasIndex("UserCreatedId");
 
+                    b.HasIndex("UserCreatedId1");
+
                     b.ToTable("Issue");
                 });
 
             modelBuilder.Entity("WebApplication1.Areas.Identity.Data.IssueType", b =>
                 {
-                    b.Property<Guid>("ContentTypeDetailId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("IssueId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ContentTypeDetailId", "IssueId")
+                    b.Property<Guid>("ContentTypeDetailId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("IssueId", "ContentTypeDetailId")
                         .HasAnnotation("SqlServer:Clustered", true);
 
-                    b.HasIndex("IssueId");
+                    b.HasIndex("ContentTypeDetailId");
 
                     b.ToTable("IssueType");
                 });
@@ -151,7 +167,13 @@ namespace WebApplication1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -162,6 +184,11 @@ namespace WebApplication1.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<string>("UrlImage")
                         .HasColumnType("nvarchar(max)");
@@ -178,16 +205,22 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Areas.Identity.Data.ProjectMember", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("UserId", "ProjectId")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                    b.Property<Guid>("UserRoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserRoleId", "ProjectId");
 
                     b.ToTable("ProjectMember");
                 });
@@ -196,15 +229,20 @@ namespace WebApplication1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Role");
                 });
@@ -213,7 +251,8 @@ namespace WebApplication1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -230,7 +269,8 @@ namespace WebApplication1.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -251,25 +291,35 @@ namespace WebApplication1.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("User");
                 });
 
             modelBuilder.Entity("WebApplication1.Areas.Identity.Data.UserRole", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
+
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("RoleId", "UserId")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("RoleId", "UserId");
 
                     b.ToTable("UserRole");
                 });
@@ -291,11 +341,6 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Areas.Identity.Data.Issue", b =>
                 {
-                    b.HasOne("WebApplication1.Areas.Identity.Data.User", "Assignee")
-                        .WithMany()
-                        .HasForeignKey("AssigneeId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("WebApplication1.Areas.Identity.Data.Issue", "IssueParent")
                         .WithMany()
                         .HasForeignKey("IssueParentId");
@@ -312,11 +357,15 @@ namespace WebApplication1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApplication1.Areas.Identity.Data.User", "UserCreated")
+                    b.HasOne("WebApplication1.Areas.Identity.Data.User", "Assignee")
                         .WithMany()
                         .HasForeignKey("UserCreatedId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("WebApplication1.Areas.Identity.Data.User", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId1");
                 });
 
             modelBuilder.Entity("WebApplication1.Areas.Identity.Data.IssueType", b =>
@@ -324,13 +373,13 @@ namespace WebApplication1.Migrations
                     b.HasOne("WebApplication1.Areas.Identity.Data.ContentTypeDetail", "ContentTypeDetail")
                         .WithMany()
                         .HasForeignKey("ContentTypeDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WebApplication1.Areas.Identity.Data.Issue", "Issue")
                         .WithMany()
                         .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -351,9 +400,9 @@ namespace WebApplication1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApplication1.Areas.Identity.Data.User", "User")
+                    b.HasOne("WebApplication1.Areas.Identity.Data.UserRole", "UserRole")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserRoleId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

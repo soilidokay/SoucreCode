@@ -8,6 +8,7 @@ namespace WebApplication1.Areas.Identity.Data
 {
     public class UserRole
     {
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }

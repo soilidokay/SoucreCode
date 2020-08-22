@@ -8,9 +8,10 @@ namespace WebApplication1.Areas.Identity.Data
 {
     public class ProjectMember
     {
-        public Guid UserId { get; set; }
-        [ForeignKey("UserId")]
-        public User User { get; set; }
+        public Guid Id { get; set; }
+        public Guid UserRoleId { get; set; }
+        [ForeignKey("UserRoleId")]
+        public UserRole UserRole { get; set; }
         public Guid ProjectId { get; set; }
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
