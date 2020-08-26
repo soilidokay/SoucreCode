@@ -1,0 +1,49 @@
+﻿@page
+@model DeTai.ThucTap.Api.Areas.Admin.VocategoryCategoryPage.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>VocabularyCategory</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VocabularyCategory.User)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VocabularyCategory.User.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VocabularyCategory.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VocabularyCategory.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VocabularyCategory.NameVN)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VocabularyCategory.NameVN)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VocabularyCategory.IsShare)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VocabularyCategory.IsShare)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VocabularyCategory.IsPublish)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VocabularyCategory.IsPublish)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.VocabularyCategory.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

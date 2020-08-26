@@ -1,17 +1,14 @@
-﻿using System;
+﻿using DeTai.ThucTap.Domain.EntityBases;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DeTai.ThucTap.Domain.Entities
 {
-    public class Phrase
+    public class Phrase:PhraseBase
     {
-        public Guid Id { get; set; }
-        public string Sentence { get; set; }
-        public string SentenceVN { get; set; }
-        public string Content { get; set; }
-        public string ContentVN { get; set; }
-        public Guid VocabularyId { get; set; }
+        [ForeignKey("VocabularyId")]
         public Vocabulary Vocabulary { get; set; }
     }
 }

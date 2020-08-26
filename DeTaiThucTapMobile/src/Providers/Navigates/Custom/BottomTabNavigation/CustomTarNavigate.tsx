@@ -87,12 +87,12 @@ export class CustomTarNavigate extends PureComponent<
     });
   };
 
-  // componentDidMount() {
-  //   let sender = this.lstTabBar[0];
-  //   if (sender !== null) {
-  //     this.setActive(sender, 0);
-  //   }
-  // }
+  componentDidMount() {
+    let sender = this.lstTabBar[0];
+    if (sender !== null) {
+      this.setActive(sender, 0);
+    }
+  }
   render() {
     const {widthTab, heightTab, AmountTabBar} = this.config;
     return (
@@ -116,6 +116,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
   },
-  content: {flex: 1, flexDirection: 'row'},
+  content: {flex: 1, flexDirection: 'row', alignItems: 'flex-end'},
   wrapHover: {position: 'absolute'},
 });

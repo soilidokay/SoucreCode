@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Colors from 'assets/Colors';
 import {ContentItemCategoryProps} from 'Views/type';
+import {Config} from 'assets/Config';
 const {width: WidthScreen} = Dimensions.get('window');
 const WidthImage = WidthScreen / 6;
 const ContentItemCategory: FC<ContentItemCategoryProps> = (props) => {
@@ -19,7 +20,9 @@ const ContentItemCategory: FC<ContentItemCategoryProps> = (props) => {
         <Image
           style={styles.image}
           resizeMode={'stretch'}
-          source={{uri: item?.Image}}
+          source={{
+            uri: Config.API_URL + Config.PATH_CATEGORY_IMAGE + item?.ImageUrl,
+          }}
         />
       </View>
       <View style={styles.WrapContent}>

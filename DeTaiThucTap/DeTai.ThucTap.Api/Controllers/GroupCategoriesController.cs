@@ -2,50 +2,113 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeTai.ThucTap.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.EntityFrameworkCore;
+using DeTai.ThucTap.Data;
+using DeTai.ThucTap.Domain.Entities;
+using DeTai.ThucTap.Application.Interfaces;
+using DeTai.ThucTap.Domain.DTO;
+using DeTai.ThucTap.Data.Attributes;
 
 namespace DeTai.ThucTap.Api.Controllers
 {
+    [AuthorizeJWT]
     public class GroupCategoriesController : ApiBaseController
     {
         private readonly ApplicationContext _context;
-        public GroupCategoriesController(ApplicationContext context)
+        private readonly IGroupCategoryService _IService;
+
+        public GroupCategoriesController(ApplicationContext context, IGroupCategoryService service)
         {
             _context = context;
+            _IService = service;
         }
-        // GET: api/<GroupCategoriesController>
+
+        // GET: api/GroupCategories
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<List<GroupCategoryDTO>>> GetGroupCategories()
         {
-            return null;
+            return await _IService.GetGroupCategories();
         }
 
-        // GET api/<GroupCategoriesController>/5
+        // GET: api/GroupCategories/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<GroupCategory>> GetGroupCategory(Guid id)
         {
-            return "value";
+            var groupCategory = await _context.GroupCategories.FindAsync(id);
+
+            if (groupCategory == null)
+            {
+                return NotFound();
+            }
+
+            return groupCategory;
         }
 
-        // POST api/<GroupCategoriesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<GroupCategoriesController>/5
+        // PUT: api/GroupCategories/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> PutGroupCategory(Guid id, GroupCategory groupCategory)
         {
+            if (id != groupCategory.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(groupCategory).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GroupCategoryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // DELETE api/<GroupCategoriesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // POST: api/GroupCategories
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<GroupCategory>> PostGroupCategory(GroupCategory groupCategory)
         {
+            _context.GroupCategories.Add(groupCategory);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetGroupCategory", new { id = groupCategory.Id }, groupCategory);
+        }
+
+        // DELETE: api/GroupCategories/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<GroupCategory>> DeleteGroupCategory(Guid id)
+        {
+            var groupCategory = await _context.GroupCategories.FindAsync(id);
+            if (groupCategory == null)
+            {
+                return NotFound();
+            }
+
+            _context.GroupCategories.Remove(groupCategory);
+            await _context.SaveChangesAsync();
+
+            return groupCategory;
+        }
+
+        private bool GroupCategoryExists(Guid id)
+        {
+            return _context.GroupCategories.Any(e => e.Id == id);
         }
     }
 }

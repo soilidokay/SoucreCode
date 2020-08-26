@@ -16,8 +16,9 @@ namespace DeTai.ThucTap.Data
             : base(options)
         {
         }
+        public DbSet<GroupCategory> GroupCategories { get; set; }
         public DbSet<Phrase> Phrases { get; set; }
-        public DbSet<Pronuciation> Pronuciations { get; set; }
+        public DbSet<Pronunciation> Pronuciations { get; set; }
         public DbSet<Vocabulary> Vocabularies { get; set; }
         public DbSet<VocabularyCategory> VocabularyCategories { get; set; }
         public DbSet<LearningGoal> LearningGoals { get; set; }
@@ -28,7 +29,8 @@ namespace DeTai.ThucTap.Data
         {
             base.OnModelCreating(builder);
             builder.Entity<StatisticalLike>().HasKey(x => new { x.UserId, x.IdVocabulary }).IsClustered();
-            builder.Entity<LearningGoalDetails>().HasKey(x => new { x.IdLearningHistory, x.IdVocabulary }).IsClustered();
+            builder.Entity<LearningGoalDetails>().HasKey(x => new { x.LearningGoalId, x.VocabularyId }).IsClustered();
+            builder.Entity<CalendarReminder>().HasIndex(x => x.IdLearningGoal).IsUnique();
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);

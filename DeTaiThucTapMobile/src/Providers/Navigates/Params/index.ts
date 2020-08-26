@@ -19,6 +19,11 @@ export interface IParamCategoryDetailScreen extends IParamNavigates {
   WordCategory?: Model.VocabularyCategory;
   IsOwner?: boolean;
 }
+export interface IParamVocabularyDetailScreen extends IParamNavigates {
+  Vocabulary?: Model.Vocabulary;
+  IsOwner?: boolean;
+}
+
 export interface IParamLearningGoalDetailScreen extends IParamNavigates {
   LearningGoal?: Model.LearningGoal;
 }
@@ -38,6 +43,7 @@ export declare type ParamStackNavigateList = {
   ExtendFeature: IParamExtendFeature;
   GroupDetail: IParamGroupDetailScreen;
   CategoryDetail: IParamCategoryDetailScreen;
+  VocabularyDetail: IParamVocabularyDetailScreen;
   LearningGoalDetail: IParamLearningGoalDetailScreen;
 } & ParamListNavigateBase;
 
@@ -56,4 +62,5 @@ export enum KeyNavigate {
   CategoryDetail = 'CategoryDetail',
   GroupDetail = 'GroupDetail',
   LearningGoalDetail = 'LearningGoalDetail',
+  VocabularyDetail = 'VocabularyDetail',
 }

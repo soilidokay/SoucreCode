@@ -49,8 +49,14 @@ export interface LayoutItemCategoryProps {
 }
 export interface LayoutItemVocabularyProps extends LayoutItemCategoryProps {
   Image: JSX.Element | JSX.Element[];
+  onPress?: () => void;
 }
 export interface LayoutItemLearningGoalProps {
+  Icon: JSX.Element | JSX.Element[];
+  Text: JSX.Element | JSX.Element[];
+  Action: JSX.Element | JSX.Element[];
+}
+export interface LayoutItemTableTimeProps {
   Icon: JSX.Element | JSX.Element[];
   Text: JSX.Element | JSX.Element[];
   Action: JSX.Element | JSX.Element[];

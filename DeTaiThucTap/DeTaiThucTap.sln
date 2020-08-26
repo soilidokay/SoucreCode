@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeTai.ThucTap.Domain", "DeT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeTai.ThucTap.Api", "DeTai.ThucTap.Api\DeTai.ThucTap.Api.csproj", "{51BBC951-32F9-4276-8872-C0D91E850821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeTai.ThucTap.Application", "DeTai.ThucTap.Application\DeTai.ThucTap.Application.csproj", "{DDB07FC3-0EAA-42A2-ACF1-12D3E54A131F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeTai.ThucTap.Application", "DeTai.ThucTap.Application\DeTai.ThucTap.Application.csproj", "{DDB07FC3-0EAA-42A2-ACF1-12D3E54A131F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Pressable} from 'react-native';
 import {LayoutItemVocabularyProps} from '../_Layouts/types';
 import Colors from 'assets/Colors';
 import ContainerBox from 'Layouts/ContainerBox';
@@ -7,8 +7,10 @@ const LayoutItemVocabulary: FC<LayoutItemVocabularyProps> = (props) => {
   return (
     <View style={styles.container}>
       <ContainerBox style={styles.containerBox}>
-        <View style={styles.WrapImage}>{props.Image}</View>
-        <View style={styles.WrapContent}>{props.Content}</View>
+        <Pressable onPress={props.onPress} style={styles.WrapTouch}>
+          <View style={styles.WrapImage}>{props.Image}</View>
+          <View style={styles.WrapContent}>{props.Content}</View>
+        </Pressable>
         <View style={styles.WrapInfo}>{props.Action}</View>
       </ContainerBox>
     </View>
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
     padding: 3,
   },
   WrapContent: {
-    flex: 50,
+    flex: 70,
     justifyContent: 'center',
     marginLeft: 10,
     paddingHorizontal: 3,
@@ -45,4 +47,5 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderColor: Colors.LightGray,
   },
+  WrapTouch: {flex: 80, flexDirection: 'row'},
 });

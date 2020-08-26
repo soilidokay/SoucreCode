@@ -1,0 +1,68 @@
+﻿@page
+@model DeTai.ThucTap.Api.Areas.Admin.Pages.VocabularyPage.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="d-flex justify-content-center row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4>Vocabulary</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Vocabulary.Id" />
+                        <div class="form-group">
+                            <label asp-for="Vocabulary.Word" class="control-label"></label>
+                            <input asp-for="Vocabulary.Word" class="form-control" />
+                            <span asp-validation-for="Vocabulary.Word" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Vocabulary.WordVN" class="control-label"></label>
+                            <input asp-for="Vocabulary.WordVN" class="form-control" />
+                            <span asp-validation-for="Vocabulary.WordVN" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Vocabulary.Image" class="control-label"></label>
+                            <input asp-for="Vocabulary.Image" class="form-control" />
+                            <span asp-validation-for="Vocabulary.Image" class="text-danger"></span>
+                        </div>
+                        <div class="form-group form-check">
+                            <div class="d-flex flex-row form-control">
+                                <input type="checkbox" asp-for="Vocabulary.IsShare" class="mr-5" />
+                                <label asp-for="Vocabulary.IsShare" class="control-label"></label>
+                            </div>
+                            <span asp-validation-for="Vocabulary.IsShare" class="text-danger"></span>
+                        </div>
+                        <div class="form-group form-check">
+                            <div class="d-flex flex-row form-control">
+                                <input type="checkbox" asp-for="Vocabulary.IsPublish" class="mr-5" />
+                                <label asp-for="Vocabulary.IsPublish" class="control-label"></label>
+                            </div>
+                            <span asp-validation-for="Vocabulary.IsPublish" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Vocabulary.VocabularyCategory" class="control-label"></label>
+                            <select asp-for="Vocabulary.VocabularyCategoryId" class="form-control" asp-items="ViewBag.VocabularyCategoryId"></select>
+                            <span asp-validation-for="Vocabulary.VocabularyCategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using DeTai.ThucTap.Application.Infrastructure;
 using DeTai.ThucTap.Data.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,9 @@ namespace DeTai.ThucTap.Api
         {
             services.AddOptionSetting(Configuration);
             services.AddJwtAuthentication(Configuration);
+            services.AddHttpContextAccessor();
+            services.AddAppService();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
         }
 
@@ -35,11 +39,10 @@ namespace DeTai.ThucTap.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseHsts();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseJwtAthentication();
-
 
             app.UseEndpoints(endpoints =>
             {
@@ -48,7 +51,7 @@ namespace DeTai.ThucTap.Api
                 endpoints.MapRazorPages();
             });
 
-          
+
         }
     }
 }

@@ -1,38 +1,24 @@
-import {ActionServiceType} from '../Services/HocServices/type';
-import {
-  GroupCategory,
-  VocabularyCategory,
-  Vocabulary,
-  LearningGoal,
-} from 'Providers/Models/type';
-export interface ServiceBase {}
-
-export interface IHomeService extends ServiceBase {
-  GetGroupCategories: ActionServiceType<GroupCategory>;
-}
-
-export interface IVocabularyCategoriesParamRequest {}
-export interface IGroupDetail extends ServiceBase {
-  GetVocabularyCategories: ActionServiceType<
-    VocabularyCategory,
-    [IVocabularyCategoriesParamRequest]
-  >;
-}
-
-export interface IVocabularyParamRequest {}
-export interface ICategoryDetail extends ServiceBase {
-  GetVocabularies: ActionServiceType<Vocabulary, [IVocabularyParamRequest]>;
-}
-
-export interface ILGVocabularyParamRequest {}
-export interface ILearningGoalDetail extends ServiceBase {
-  GetVocabularies: ActionServiceType<Vocabulary, [ILGVocabularyParamRequest]>;
-}
-
+export declare type TFunctionService = (
+  ...param: any[]
+) => any[] | Promise<any[]>;
+export declare type TDataContext = {
+  Data: any[];
+  isNext: boolean;
+};
+export declare type TConfigServiceBase = {
+  Action: TFunctionService;
+  ParamRequest: any;
+};
+export declare type TContextMiddleWare = {
+  DataContext: TDataContext;
+  ConfigApi: TConfigServiceBase;
+};
+export declare type TMiddleWare = (
+  context: TContextMiddleWare,
+) => void | Promise<void>;
+export interface IServiceBase {}
 export interface ILearningGoalParamRequest {}
-export interface ILearningGoalService extends ServiceBase {
-  GetLearningGoals: ActionServiceType<
-    LearningGoal,
-    [ILearningGoalParamRequest]
-  >;
+export interface ILearningDetailParam {
+  LearningGoalId?: string;
 }
+export interface ITableTimeParamRequest {}

@@ -86,11 +86,15 @@ namespace DeTai.ThucTap.Data.Migrations
 
             modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.CalendarReminder", b =>
                 {
-                    b.Property<Guid>("IdLearningGoal")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("IdLearningGoal")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsLoop")
                         .HasColumnType("bit");
@@ -104,9 +108,35 @@ namespace DeTai.ThucTap.Data.Migrations
                     b.Property<byte>("TableTime")
                         .HasColumnType("tinyint");
 
-                    b.HasKey("IdLearningGoal");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdLearningGoal")
+                        .IsUnique()
+                        .HasFilter("[IdLearningGoal] IS NOT NULL");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CalendarReminders");
+                });
+
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.GroupCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsOwner")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GroupCategories");
                 });
 
             modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.LearningGoal", b =>
@@ -136,16 +166,16 @@ namespace DeTai.ThucTap.Data.Migrations
 
             modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.LearningGoalDetails", b =>
                 {
-                    b.Property<Guid>("IdLearningHistory")
+                    b.Property<Guid>("LearningGoalId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdVocabulary")
+                    b.Property<Guid>("VocabularyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("IdLearningHistory", "IdVocabulary")
+                    b.HasKey("LearningGoalId", "VocabularyId")
                         .HasAnnotation("SqlServer:Clustered", true);
 
-                    b.HasIndex("IdVocabulary");
+                    b.HasIndex("VocabularyId");
 
                     b.ToTable("LearningGoalDetails");
                 });
@@ -178,7 +208,7 @@ namespace DeTai.ThucTap.Data.Migrations
                     b.ToTable("Phrases");
                 });
 
-            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Pronuciation", b =>
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Pronunciation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -225,7 +255,7 @@ namespace DeTai.ThucTap.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPublish")
@@ -255,6 +285,9 @@ namespace DeTai.ThucTap.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPublish")
                         .HasColumnType("bit");
@@ -413,9 +446,11 @@ namespace DeTai.ThucTap.Data.Migrations
                 {
                     b.HasOne("DeTai.ThucTap.Domain.Entities.LearningGoal", "LearningGoal")
                         .WithMany()
-                        .HasForeignKey("IdLearningGoal")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdLearningGoal");
+
+                    b.HasOne("DeTai.ThucTap.Data.CustomEntites.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.LearningGoal", b =>
@@ -427,15 +462,15 @@ namespace DeTai.ThucTap.Data.Migrations
 
             modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.LearningGoalDetails", b =>
                 {
-                    b.HasOne("DeTai.ThucTap.Domain.Entities.LearningGoal", "LearningHistory")
-                        .WithMany()
-                        .HasForeignKey("IdLearningHistory")
+                    b.HasOne("DeTai.ThucTap.Domain.Entities.LearningGoal", "LearningGoal")
+                        .WithMany("LearningGoalDetails")
+                        .HasForeignKey("LearningGoalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DeTai.ThucTap.Domain.Entities.Vocabulary", "Vocabulary")
                         .WithMany()
-                        .HasForeignKey("IdVocabulary")
+                        .HasForeignKey("VocabularyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -449,10 +484,10 @@ namespace DeTai.ThucTap.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Pronuciation", b =>
+            modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Pronunciation", b =>
                 {
                     b.HasOne("DeTai.ThucTap.Domain.Entities.Vocabulary", "Vocabulary")
-                        .WithMany("Pronuciations")
+                        .WithMany("Pronunciations")
                         .HasForeignKey("VocabularyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -476,7 +511,7 @@ namespace DeTai.ThucTap.Data.Migrations
             modelBuilder.Entity("DeTai.ThucTap.Domain.Entities.Vocabulary", b =>
                 {
                     b.HasOne("DeTai.ThucTap.Domain.Entities.VocabularyCategory", "VocabularyCategory")
-                        .WithMany()
+                        .WithMany("Vocabularies")
                         .HasForeignKey("VocabularyCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

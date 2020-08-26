@@ -6,28 +6,62 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DeTai.ThucTap.Data;
 using DeTai.ThucTap.Domain.Entities;
+using DeTai.ThucTap.Domain.DTO;
+using DeTai.ThucTap.Application.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using DeTai.ThucTap.Data.CustomEntites;
+using DeTai.ThucTap.Domain.Common;
+using DeTai.ThucTap.Domain.EntityBases;
 
 namespace DeTai.ThucTap.Api.Controllers
-{ 
+{
     public class VocabularyCategoriesController : ApiBaseController
     {
         private readonly ApplicationContext _context;
-
-        public VocabularyCategoriesController(ApplicationContext context)
+        private readonly UserManager<ApplicationUser> _UserManager;
+        private readonly IManagerImages _ManagerImages;
+        public VocabularyCategoriesController(
+            ApplicationContext context,
+            IManagerImages managerImages,
+            UserManager<ApplicationUser> userManager
+            )
         {
             _context = context;
+            _ManagerImages = managerImages;
+            _UserManager = userManager;
         }
 
         // GET: api/VocabularyCategories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VocabularyCategory>>> GetVocabularyCategories()
+        public async Task<ActionResult<IEnumerable<VocabularyCategoryBase>>> GetVocabularyCategories([FromQuery] Guid GroupId)
         {
-            return await _context.VocabularyCategories.ToListAsync();
+            var User = await _UserManager.GetUserAsync(HttpContext.User);
+
+            if (GroupId == Helper.GroupAdmin)
+            {
+                return await (from Category in _context.VocabularyCategories
+                              join userrole in _context.UserRoles.Where(x => x.RoleId == Helper.RoleAmidn)
+                              on Category.UserId equals userrole.UserId
+                              select Category as VocabularyCategoryBase).ToListAsync();
+            }
+            else if (GroupId == Helper.GroupOwner)
+            {
+                return await _context.VocabularyCategories.Where(x => x.UserId == User.Id)
+                    .Select(x => x as VocabularyCategoryBase)
+                    .ToListAsync();
+            }
+            else
+            {
+                return await (from Category in _context.VocabularyCategories.Where(x => x.UserId != User.Id)
+                              join userrole in _context.UserRoles.Where(x => x.RoleId == Helper.RoleUser)
+                              on Category.UserId equals userrole.UserId
+                              select Category as VocabularyCategoryBase).ToListAsync();
+            }
         }
 
         // GET: api/VocabularyCategories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<VocabularyCategory>> GetVocabularyCategory(Guid id)
+        [HttpGet]
+        public async Task<ActionResult<VocabularyCategoryBase>> GetVocabularyCategory([FromQuery] Guid id)
         {
             var vocabularyCategory = await _context.VocabularyCategories.FindAsync(id);
 
@@ -42,12 +76,27 @@ namespace DeTai.ThucTap.Api.Controllers
         // PUT: api/VocabularyCategories/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutVocabularyCategory(Guid id, VocabularyCategory vocabularyCategory)
+        [HttpPut]
+        public async Task<IActionResult> PutVocabularyCategory([FromQuery] Guid id, [FromForm] VocabularyCategory vocabularyCategory)
         {
             if (id != vocabularyCategory.Id)
             {
                 return BadRequest();
+            }
+
+            string filename = null;
+            if (vocabularyCategory.Image != null)
+            {
+                filename = await _ManagerImages.SaveImageAsync(
+                   vocabularyCategory.Image,
+                   Helper.PathImageCategory,
+                   vocabularyCategory.Id.ToString()
+                   );
+            }
+
+            if (!string.IsNullOrEmpty(filename))
+            {
+                vocabularyCategory.ImageUrl = filename;
             }
 
             _context.Entry(vocabularyCategory).State = EntityState.Modified;
@@ -56,7 +105,7 @@ namespace DeTai.ThucTap.Api.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException err)
             {
                 if (!VocabularyCategoryExists(id))
                 {
@@ -64,10 +113,9 @@ namespace DeTai.ThucTap.Api.Controllers
                 }
                 else
                 {
-                    throw;
+                    throw err;
                 }
             }
-
             return NoContent();
         }
 
@@ -75,17 +123,43 @@ namespace DeTai.ThucTap.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<VocabularyCategory>> PostVocabularyCategory(VocabularyCategory vocabularyCategory)
+        public async Task<ActionResult<VocabularyCategoryBase>> PostVocabularyCategory([FromForm] VocabularyCategory vocabularyCategory)
         {
-            _context.VocabularyCategories.Add(vocabularyCategory);
-            await _context.SaveChangesAsync();
+            if (ModelState.IsValid)
+            {
+                vocabularyCategory.Id = Guid.NewGuid();
+                string filename = await _ManagerImages.SaveImageAsync(
+                    vocabularyCategory.Image,
+                    Helper.PathImageCategory,
+                    vocabularyCategory.Id.ToString()
+                    );
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    vocabularyCategory.ImageUrl = filename;
+                    var user = await _UserManager.GetUserAsync(HttpContext.User);
 
-            return CreatedAtAction("GetVocabularyCategory", new { id = vocabularyCategory.Id }, vocabularyCategory);
+                    if (user == null)
+                    {
+                        return BadRequest("Not found user!");
+                    }
+
+                    vocabularyCategory.UserId = user.Id;
+
+                    vocabularyCategory = _context.VocabularyCategories.Add(vocabularyCategory).Entity;
+                    await _context.SaveChangesAsync();
+                    vocabularyCategory.Image = null;
+                    return vocabularyCategory;
+                }
+
+            }
+
+            return BadRequest(ModelState);
+
         }
 
         // DELETE: api/VocabularyCategories/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<VocabularyCategory>> DeleteVocabularyCategory(Guid id)
+        [HttpDelete]
+        public async Task<ActionResult<VocabularyCategoryBase>> DeleteVocabularyCategory([FromQuery] Guid id)
         {
             var vocabularyCategory = await _context.VocabularyCategories.FindAsync(id);
             if (vocabularyCategory == null)

@@ -1,5 +1,5 @@
-import React, {PureComponent} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import React, {PureComponent, createRef} from 'react';
+import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import {
   PropsLearningGoal,
   FlatListLearningGold as FlatListLearningGoal,
@@ -17,7 +17,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {KeyNavigate} from 'Providers/Navigates/Params';
 import * as Model from '../../Providers/Models/type';
 import AppContext from 'Providers/Contexts/AppContext';
+import createModelFormContent, {ModalForm} from 'Views/_Components/ModalForm';
+
+const FormLearning = createModelFormContent<Model.LearningGoal>({
+  Name: {Type: 'Default', option: {}},
+});
 class LearningGoal extends PureComponent<PropsLearningGoal> {
+  private refModal = createRef<ModalForm<Model.LearningGoal>>();
   private ConfigFlatList: FlatListLearningGoalProp;
   constructor(props: PropsLearningGoal) {
     super(props);
@@ -45,7 +51,7 @@ class LearningGoal extends PureComponent<PropsLearningGoal> {
             }
             Action={[
               <ButtonIcon
-                onPress={this.onPressAdd}
+                onPress={() => this.onPressEdit(item)}
                 key={'00'}
                 sizeIcon={30}
                 IconComponent={MaterialIcons}
@@ -53,7 +59,7 @@ class LearningGoal extends PureComponent<PropsLearningGoal> {
               />,
               <ButtonIcon
                 key={'01'}
-                onPress={this.onPressDelete}
+                onPress={() => this.onPressDelete(item)}
                 sizeIcon={30}
                 IconComponent={MaterialIcons}
                 colorIcon={Colors.Orange}
@@ -68,8 +74,50 @@ class LearningGoal extends PureComponent<PropsLearningGoal> {
       contentContainerStyle: {paddingBottom: AppContext.HeightTabNavigate},
     };
   }
-  onPressAdd = () => {};
-  onPressDelete = () => {};
+  onPressEdit = (data: Model.LearningGoal) => {
+    this.refModal.current?.Show({
+      data: data,
+      onSubmit: this.onSubmitEdit,
+    });
+  };
+  onSubmitEdit = async (data: Model.LearningGoal) => {
+    await LearningGoalService.PutLearningGoal(data.Id, data)
+      .then(this.props.refresh)
+      .catch(() => {
+        Alert.alert('Putting is Failed!');
+      });
+    this.refModal.current?.close();
+  };
+  onPressAdd = () => {
+    this.refModal.current?.Show({onSubmit: this.onSubmitAdd});
+  };
+  onSubmitAdd = async (data: Model.LearningGoal) => {
+    await LearningGoalService.PostLearningGoal(data)
+      .then(this.props.refresh)
+      .catch(() => {
+        Alert.alert('addition is Failed!');
+      });
+    this.refModal.current?.close();
+  };
+  onPressDelete = (data: Model.LearningGoal) => {
+    Alert.alert('Delete', `Are you sure delete "${data.Name ?? ''}"?`, [
+      {
+        text: 'OK',
+        style: 'destructive',
+        onPress: async () => {
+          await LearningGoalService.DeleteLearningGoal(data)
+            .then(this.props.refresh)
+            .catch(() => {
+              Alert.alert('Deletion is Failed!');
+            });
+        },
+      },
+      {
+        text: 'cancel',
+        style: 'cancel',
+      },
+    ]);
+  };
   onPressItem = (item?: Model.LearningGoal) => {
     const {navigation} = this.props;
     navigation?.navigate(KeyNavigate.LearningGoalDetail, {
@@ -79,10 +127,15 @@ class LearningGoal extends PureComponent<PropsLearningGoal> {
   render() {
     return (
       <View style={styles.container}>
-        <TitleGroup ActionName="Add" onPress={() => {}}>
+        <TitleGroup ActionName="Add" onPress={this.onPressAdd}>
           Learning List
         </TitleGroup>
         <FlatListLearningGoal {...this.ConfigFlatList} />
+        <FormLearning
+          ref={this.refModal}
+          visible={true}
+          animationType={'slide'}
+        />
       </View>
     );
   }

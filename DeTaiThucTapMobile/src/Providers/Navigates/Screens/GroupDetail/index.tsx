@@ -15,7 +15,13 @@ class GroupDetailScreen extends ScreenBase<
 
   render() {
     const {navigation, route} = this.props;
-    return <GroupDetail navigation={navigation} route={route} />;
+    return (
+      <GroupDetail
+        ParamRequests={[{GroupId: route?.params.GroupCategory?.Id ?? ''}]}
+        navigation={navigation}
+        route={route}
+      />
+    );
   }
 }
 

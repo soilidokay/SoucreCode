@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeTai.ThucTap.Data\DeTai.ThucTap.Data.csproj" />
+    <ProjectReference Include="..\DeTai.ThucTap.Application\DeTai.ThucTap.Application.csproj" />
   </ItemGroup>
 
 

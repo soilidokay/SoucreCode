@@ -1,0 +1,72 @@
+﻿@page
+@model DeTai.ThucTap.Api.Areas.Admin.VocategoryCategoryPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<p>
+    <a class="btn btn-success" asp-page="Create">Create New</a>
+</p>
+
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title ">VocabularyCategory</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VocabularyCategory[0].User)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VocabularyCategory[0].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VocabularyCategory[0].NameVN)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VocabularyCategory[0].IsShare)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VocabularyCategory[0].IsPublish)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.VocabularyCategory)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NameVN)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsShare)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsPublish)
+                            </td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+

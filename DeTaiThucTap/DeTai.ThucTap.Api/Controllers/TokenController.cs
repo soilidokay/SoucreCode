@@ -23,12 +23,28 @@ namespace DeTai.ThucTap.Api.Controllers
     {
         private readonly UserManager<ApplicationUser> _UserManager;
         private readonly SignInManager<ApplicationUser> _SignInManager;
+        private readonly RoleManager<IdentityRole> _RoleManager;
         private readonly JwtSetting _JwtSetting;
-        public TokenController(UserManager<ApplicationUser> userManager, JwtSetting jwtSetting, SignInManager<ApplicationUser> signInManager)
+        public TokenController(
+            UserManager<ApplicationUser> userManager,
+            JwtSetting jwtSetting, 
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager
+            )
         {
             _UserManager = userManager;
             _JwtSetting = jwtSetting;
             _SignInManager = signInManager;
+            _RoleManager = roleManager;
+        }
+        [HttpPost]
+        public async Task AddRole(string Name)
+        {
+           // await _SignInManager.SignInAsync(await _UserManager.FindByNameAsync("tainguyen.ntt.97@gmail.com"),true);
+         //   await _SignInManager.SignOutAsync();
+           //await _RoleManager.CreateAsync(new IdentityRole { Name = "Admin" });
+           //await _RoleManager.CreateAsync(new IdentityRole { Name = "User" });
+            //await _UserManager.AddToRoleAsync(await _UserManager.FindByNameAsync("tainguyen.ntt.97@gmail.com"), "Admin");
         }
         [HttpGet]
         public async Task<IActionResult> LogOut()

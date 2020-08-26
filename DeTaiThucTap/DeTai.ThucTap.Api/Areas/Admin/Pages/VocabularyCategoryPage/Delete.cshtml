@@ -1,0 +1,57 @@
+﻿@page
+@model DeTai.ThucTap.Api.Areas.Admin.VocategoryCategoryPage.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="d-flex justify-content-center row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h3>Are you sure you want to delete this?</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <dl>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.VocabularyCategory.User)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.VocabularyCategory.User.Id)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.VocabularyCategory.Name)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.VocabularyCategory.Name)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.VocabularyCategory.NameVN)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.VocabularyCategory.NameVN)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.VocabularyCategory.IsShare)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.VocabularyCategory.IsShare)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.VocabularyCategory.IsPublish)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.VocabularyCategory.IsPublish)
+                        </dd>
+                    </dl>
+                    <form method="post">
+                        <input type="hidden" asp-for="VocabularyCategory.Id" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

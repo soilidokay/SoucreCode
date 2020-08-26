@@ -15,7 +15,13 @@ class CategoryDetailScreen extends ScreenBase<
 
   render() {
     const {navigation, route} = this.props;
-    return <CategoryDetail navigation={navigation} route={route} />;
+    return (
+      <CategoryDetail
+        ParamRequests={[{CategoryId: route?.params.WordCategory?.Id ?? ''}]}
+        navigation={navigation}
+        route={route}
+      />
+    );
   }
 }
 

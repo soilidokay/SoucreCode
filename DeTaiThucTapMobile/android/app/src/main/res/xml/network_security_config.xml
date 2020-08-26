@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+   <base-config cleartextTrafficPermitted="false" />
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">192.168.1.64</domain>
+        <domain includeSubdomains="true">192.168.0.64</domain>
+        <domain includeSubdomains="true">192.168.1.55</domain>
+        <domain includeSubdomains="true">192.168.0.55</domain>
+        <domain includeSubdomains="true">192.168.137.1</domain>
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">riolish.dev</domain> 
+       <trust-anchors> 
+            <certificates src="user"/>
+            <!-- <certificates src="@raw/test"/> -->
+            <certificates src="system"/>
+            <certificates src="@raw/test"/>
+            <certificates src="@raw/fiddlerroot"/>
+           <!--   <certificates src="system"/>
+            <certificates src="@raw/my_ca"/>
+            <certificates src="@raw/test_ca"/>-->
+        </trust-anchors> 
+    </domain-config >
+
+     <debug-overrides>
+         <trust-anchors>
+           <!-- <certificates src="@raw/my_ca"/>
+            <certificates src="@raw/test"/>
+            <certificates src="@raw/test_ca"/> -->
+            <certificates src="user"/>
+            <certificates src="system"/>
+        </trust-anchors>
+    </debug-overrides>
+    
+   
+</network-security-config>

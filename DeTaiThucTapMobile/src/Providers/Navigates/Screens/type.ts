@@ -22,7 +22,8 @@ export interface IRootAppScreenProps
 
 export interface ICategoryDetailScreenProps
   extends IScreenPropsBase<KeyNavigate.CategoryDetail> {}
-
+export interface IVocabularyDetailScreenProps
+  extends IScreenPropsBase<KeyNavigate.VocabularyDetail> {}
 export interface ILearningGoalDetailScreenProps
   extends IScreenPropsBase<KeyNavigate.LearningGoalDetail> {}
 

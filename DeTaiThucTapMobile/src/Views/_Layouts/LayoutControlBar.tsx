@@ -18,7 +18,7 @@ const LayoutControlBar: FC<LayoutControlBarProps> = (props) => {
               {borderColor: item.ColorBorder ?? Colors.CustomLightGreen},
             ]}>
             <ButtonIcon
-              onPress={item.onPress}
+              onPress={() => item.onPress && item.onPress(props.item)}
               style={styles.ButtonAdd}
               IconComponent={item.ComponentIcon || Entypo}
               icon={item.icon}
@@ -30,7 +30,7 @@ const LayoutControlBar: FC<LayoutControlBarProps> = (props) => {
     </View>
   );
 };
-
+LayoutControlBar.defaultProps = {};
 export default LayoutControlBar;
 
 const styles = StyleSheet.create({

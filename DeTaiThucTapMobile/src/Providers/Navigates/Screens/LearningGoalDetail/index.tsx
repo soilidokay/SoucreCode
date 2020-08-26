@@ -15,7 +15,13 @@ class LearningGoalDetailScreen extends ScreenBase<
 
   render() {
     const {navigation, route} = this.props;
-    return <LearningGoalDetail navigation={navigation} route={route} />;
+    return (
+      <LearningGoalDetail
+        ParamRequests={[{LearningGoalId: route?.params.LearningGoal?.Id}]}
+        navigation={navigation}
+        route={route}
+      />
+    );
   }
 }
 

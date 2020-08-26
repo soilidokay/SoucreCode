@@ -1,0 +1,73 @@
+﻿@page
+@model DeTai.ThucTap.Api.Areas.Admin.Pages.TableTimePage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title ">TableTime</h4>
+        <p class="card-category"> Here is a subtitle for this table</p>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CalendarReminder[0].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CalendarReminder[0].Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CalendarReminder[0].TableTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CalendarReminder[0].LongTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CalendarReminder[0].IsLoop)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CalendarReminder[0].LearningGoal)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CalendarReminder)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TableTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LongTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsLoop)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LearningGoal.Id)
+                            </td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.IdLearningGoal">Edit</a> |
+                                <a asp-page="./Details" asp-route-id="@item.IdLearningGoal">Details</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.IdLearningGoal">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+

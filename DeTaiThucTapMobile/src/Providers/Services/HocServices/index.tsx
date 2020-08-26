@@ -14,12 +14,14 @@ function HocService<ComponentProps, ParamRequest = {} | null>(
   option?: HocOption,
 ) {
   const SwitchRender: SwitchRenderType<ComponentProps> = {
-    Loaded: (state, props) => {
+    Loaded: (state, props, options) => {
       const {data} = state;
+      console.log('[[[[[[[object]]]]]]]', data);
       return (
         <WrappedComponent
           data={data.length === 1 ? data[0] : data}
           {...props}
+          refresh={options.refresh}
         />
       );
     },
@@ -40,6 +42,9 @@ function HocService<ComponentProps, ParamRequest = {} | null>(
       this.isMount = true;
       this.Timer = setTimeout(() => {}, 0);
     }
+    static defaultProps = {
+      refresh: () => {},
+    };
     componentWillUnmount() {
       this.isMount = false;
       clearTimeout(this.Timer);
@@ -50,20 +55,34 @@ function HocService<ComponentProps, ParamRequest = {} | null>(
       }
       this.setState({status, data});
     }
-    componentDidMount = () => {
+
+    refresh = () => {
+      this.UpdateStatus(HocComponentStatus.Loading, []);
+      this.LoadData();
+    };
+    LoadData = () => {
       clearTimeout(this.Timer);
       this.Timer = setTimeout(async () => {
         if (option) {
+          const {ParamRequests: param} = this.props;
+          let ParamRequests = param ?? [];
           const data = await Promise.all(
-            option.ActionService.map((action) => action()),
+            option.ActionService.map((action, index) =>
+              action(ParamRequests[index]),
+            ),
           );
           this.UpdateStatus(HocComponentStatus.Loaded, data);
         }
       }, 200);
     };
+    componentDidMount = () => {
+      this.LoadData();
+    };
     render() {
       const {status} = this.state;
-      return SwitchRender[status](this.state, this.props);
+      return SwitchRender[status](this.state, this.props, {
+        refresh: this.refresh,
+      });
     }
   }
 

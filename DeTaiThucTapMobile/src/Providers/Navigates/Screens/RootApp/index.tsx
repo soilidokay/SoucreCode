@@ -22,8 +22,8 @@ class RootApp extends ScreenBase<KeyNavigate.RootApp, IRootAppScreenProps> {
       <TabNavigate.Navigator tabBarOptions={TabNavigateTheme.tabBarOptions}>
         <TabNavigate.Screen {...HomeScreen} />
         <TabNavigate.Screen {...LearningGoalScreen} />
-        <TabNavigate.Screen {...AboutScreen} />
         <TabNavigate.Screen {...TimeTable} />
+        <TabNavigate.Screen {...AboutScreen} />
       </TabNavigate.Navigator>
     );
   }

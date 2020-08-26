@@ -4,7 +4,7 @@ export enum HocComponentStatus {
 }
 
 export declare type HocComponentProps<ComponentProps, ParamRequest = {}> = {
-  ParamRequest?: ParamRequest;
+  ParamRequests?: ParamRequest[];
 } & ComponentProps;
 // export interface HocComponentProps<ComponentProps> extends T<ComponentProps> {
 
@@ -27,5 +27,8 @@ export declare type SwitchRenderType<ComponentProps> = {
   [key in HocComponentStatus]: (
     state: HocComponentState,
     props: HocComponentProps<ComponentProps>,
+    options: {
+      refresh: () => void;
+    },
   ) => JSX.Element;
 };

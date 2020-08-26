@@ -11,12 +11,9 @@ namespace DeTai.ThucTap.Data.Infrastructure
     {
         public static void AddOptionSetting(this IServiceCollection services,IConfiguration configuration)
         {
-            services.AddSingleton<JwtSetting>((store) =>
-            {
-                JwtSetting jwtSetting = new JwtSetting();
-                configuration.Bind(nameof(JwtSetting),jwtSetting);
-                return jwtSetting;
-            });
+            JwtSetting jwtSetting = new JwtSetting();
+            configuration.Bind(nameof(JwtSetting), jwtSetting);
+            services.AddSingleton(jwtSetting);
         }
     }
 }

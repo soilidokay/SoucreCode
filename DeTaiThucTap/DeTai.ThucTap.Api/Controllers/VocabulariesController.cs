@@ -7,48 +7,126 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DeTai.ThucTap.Data;
 using DeTai.ThucTap.Domain.Entities;
+using DeTai.ThucTap.Domain.Common;
+using Microsoft.AspNetCore.Identity;
+using DeTai.ThucTap.Data.CustomEntites;
+using DeTai.ThucTap.Application.Interfaces;
+using DeTai.ThucTap.Domain.EntityBases;
+using DeTai.ThucTap.Domain.DTO;
 
 namespace DeTai.ThucTap.Api.Controllers
-{ 
+{
     public class VocabulariesController : ApiBaseController
     {
         private readonly ApplicationContext _context;
+        private readonly UserManager<ApplicationUser> _UserManager;
+        private readonly IManagerImages _ManagerImages;
 
-        public VocabulariesController(ApplicationContext context)
+        public VocabulariesController(
+            ApplicationContext context,
+            IManagerImages managerImages,
+            UserManager<ApplicationUser> userManager
+
+            )
         {
             _context = context;
+            _ManagerImages = managerImages;
+            _UserManager = userManager;
         }
 
         // GET: api/Vocabularies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Vocabulary>>> GetVocabularies()
+        public async Task<ActionResult<IEnumerable<VocabularyBase>>> GetVocabularies([FromQuery] Guid CategoryId)
         {
-            return await _context.Vocabularies.ToListAsync();
+            return await _context.Vocabularies
+                .Where(x => x.VocabularyCategoryId == CategoryId)
+                //.Select(x => new VocabularyDTO(x)
+                //{
+                //    Pronunciations = x.Pronunciations,
+                //    Phrases = x.Phrases
+                //})
+                .ToListAsync();
         }
-
+        [HttpGet]
         // GET: api/Vocabularies/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Vocabulary>> GetVocabulary(Guid id)
+        public async Task<ActionResult<VocabularyDTO>> GetVocabulary([FromQuery] Guid VocabularyId)
         {
-            var vocabulary = await _context.Vocabularies.FindAsync(id);
+            var Temp = (await _context.Vocabularies.Include(x => x.Pronunciations)
+                .Include(x => x.Phrases).FirstOrDefaultAsync(x => x.Id == VocabularyId));
 
-            if (vocabulary == null)
+            if (Temp == null)
             {
                 return NotFound();
             }
-
-            return vocabulary;
+            else
+            {
+                return new VocabularyDTO(Temp)
+                {
+                    Phrases = Temp.Phrases.Select(x => x as PhraseBase),
+                    Pronunciations = Temp.Pronunciations.Select(x => x as PronunciationBase)
+                };
+            }
         }
-
+        [HttpGet]
+        // GET: api/Vocabularies/5
+        public async Task<ActionResult<IEnumerable<VocabularyBase>>> GetVocabularyWithLearnings([FromQuery] Guid LearningGoalId)
+        {
+            var temp = await _context.LearningGoalDetails
+                .Include(x => x.Vocabulary)
+                .Where(x => x.LearningGoalId == LearningGoalId)
+                .Select(x => x.Vocabulary)
+                .ToArrayAsync();
+            if (temp == null) return NoContent();
+            return Ok(temp);
+        }
         // PUT: api/Vocabularies/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutVocabulary(Guid id, Vocabulary vocabulary)
+        [HttpPut]
+        public async Task<IActionResult> PutVocabulary([FromQuery] Guid id, [FromForm] Vocabulary vocabulary)
         {
+            //if (id != vocabulary.Id)
+            //{
+            //    return BadRequest();
+            //}
+
+            //_context.Entry(vocabulary).State = EntityState.Modified;
+
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!VocabularyExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            //return NoContent();
             if (id != vocabulary.Id)
             {
                 return BadRequest();
+            }
+
+            string filename = null;
+            if (vocabulary.Image != null)
+            {
+                filename = await _ManagerImages.SaveImageAsync(
+                   vocabulary.Image,
+                   Helper.PathImageVocabulary,
+                   vocabulary.Id.ToString()
+                   );
+            }
+
+            if (!string.IsNullOrEmpty(filename))
+            {
+                vocabulary.ImageUrl = filename;
             }
 
             _context.Entry(vocabulary).State = EntityState.Modified;
@@ -57,7 +135,7 @@ namespace DeTai.ThucTap.Api.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException err)
             {
                 if (!VocabularyExists(id))
                 {
@@ -65,10 +143,9 @@ namespace DeTai.ThucTap.Api.Controllers
                 }
                 else
                 {
-                    throw;
+                    throw err;
                 }
             }
-
             return NoContent();
         }
 
@@ -76,17 +153,34 @@ namespace DeTai.ThucTap.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Vocabulary>> PostVocabulary(Vocabulary vocabulary)
+        public async Task<ActionResult<VocabularyBase>> PostVocabulary([FromForm] Vocabulary vocabulary)
         {
-            _context.Vocabularies.Add(vocabulary);
-            await _context.SaveChangesAsync();
+            if (ModelState.IsValid)
+            {
+                vocabulary.Id = Guid.NewGuid();
+                string filename = await _ManagerImages.SaveImageAsync(
+                    vocabulary.Image,
+                    Helper.PathImageVocabulary,
+                    vocabulary.Id.ToString()
+                    ); ;
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    vocabulary.ImageUrl = filename;
+                    vocabulary = _context.Vocabularies.Add(vocabulary).Entity;
+                    await _context.SaveChangesAsync();
+                    vocabulary.Image = null;
+                    return vocabulary;
+                }
 
-            return CreatedAtAction("GetVocabulary", new { id = vocabulary.Id }, vocabulary);
+            }
+
+            return BadRequest(ModelState);
+
         }
 
         // DELETE: api/Vocabularies/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Vocabulary>> DeleteVocabulary(Guid id)
+        [HttpDelete]
+        public async Task<ActionResult<VocabularyBase>> DeleteVocabulary([FromQuery] Guid id)
         {
             var vocabulary = await _context.Vocabularies.FindAsync(id);
             if (vocabulary == null)
