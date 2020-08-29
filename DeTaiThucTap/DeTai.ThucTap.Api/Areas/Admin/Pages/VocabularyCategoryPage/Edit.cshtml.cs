@@ -8,16 +8,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DeTai.ThucTap.Data;
 using DeTai.ThucTap.Domain.Entities;
+using DeTai.ThucTap.Application.Interfaces;
+using DeTai.ThucTap.Domain.Common;
 
 namespace DeTai.ThucTap.Api.Areas.Admin.VocategoryCategoryPage
 {
     public class EditModel : PageModel
     {
         private readonly DeTai.ThucTap.Data.ApplicationContext _context;
+        private readonly IManagerImages _ManagerImages;
 
-        public EditModel(DeTai.ThucTap.Data.ApplicationContext context)
+        public EditModel(
+            DeTai.ThucTap.Data.ApplicationContext context,
+            IManagerImages managerImages
+            )
         {
             _context = context;
+            _ManagerImages = managerImages;
         }
 
         [BindProperty]
@@ -37,8 +44,6 @@ namespace DeTai.ThucTap.Api.Areas.Admin.VocategoryCategoryPage
             {
                 return NotFound();
             }
-            ViewData["GroupCategoryId"] = new SelectList(_context.GroupCategories.Where(x => !x.IsOwner), "Id", "Name");
-            ViewData["UserId"] = new SelectList(_context.Users.Where(x => x.Email == HttpContext.User.Identity.Name), "Id", "Email");
 
             return Page();
         }
@@ -56,6 +61,19 @@ namespace DeTai.ThucTap.Api.Areas.Admin.VocategoryCategoryPage
 
             try
             {
+                if (VocabularyCategory.Image != null)
+                {
+                    string filename = await _ManagerImages.SaveImageAsync(
+                        VocabularyCategory.Image, Helper.PathImageCategory, VocabularyCategory.Id.ToString());
+                    if (string.IsNullOrEmpty(filename))
+                    {
+                        throw new Exception("Save is fail!");
+                    }
+                    else
+                    {
+                        VocabularyCategory.ImageUrl = filename;
+                    }
+                }
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

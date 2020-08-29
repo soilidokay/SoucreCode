@@ -1,18 +1,17 @@
 import React from 'react';
-import {Text, View} from 'react-native';
 import ScreenBase from '../ScreenBase';
 import {KeyNavigate} from 'Providers/Navigates/Params';
 import {IScreenComponent} from 'Providers/Navigates/type';
 import {IExtendFeatureScreenProps} from '../type';
+import UserManage from 'Views/UserManage';
 class ExtendFeature extends ScreenBase<
   KeyNavigate.ExtendFeature,
   IExtendFeatureScreenProps
 > {
   render() {
+    const {navigation, route} = this.props;
     return (
-      <View>
-        <Text> textInComponent </Text>
-      </View>
+      <UserManage refresh={() => {}} navigation={navigation} route={route} />
     );
   }
 }

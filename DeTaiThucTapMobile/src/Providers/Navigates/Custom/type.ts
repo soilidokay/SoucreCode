@@ -6,7 +6,7 @@ import {
 import {TabRouterOptions} from '@react-navigation/routers/lib/typescript/src/TabRouter';
 import {IStackNavigateTheme} from 'assets/themes/type';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {ParamNavigate} from '../Params';
+import {ParamNavigate, ParamStackNavigateLoginList} from '../Params';
 import {TIconComponent} from '../type';
 // import {StyleProp, ViewStyle} from 'react-native';
 // // Props accepted by the view
@@ -52,7 +52,19 @@ export declare type StackScreenProps<RouteName extends keyof ParamNavigate> = {
   route?: RouteProp<ParamNavigate, RouteName>;
 };
 
+export declare type StackScreenLoginProps<
+  RouteName extends keyof ParamStackNavigateLoginList
+> = {
+  navigation?: StackNavigationProp<ParamStackNavigateLoginList, RouteName>;
+  route?: RouteProp<ParamStackNavigateLoginList, RouteName>;
+};
+
 export interface StackNavigateProps<RouteName extends keyof ParamNavigate>
   extends StackScreenProps<RouteName> {
+  theme: IStackNavigateTheme;
+}
+export interface StackNavigateLoginProps<
+  RouteName extends keyof ParamStackNavigateLoginList
+> extends StackScreenLoginProps<RouteName> {
   theme: IStackNavigateTheme;
 }

@@ -1,6 +1,6 @@
 ﻿@page
 @model DeTai.ThucTap.Api.Areas.Admin.VocategoryCategoryPage.IndexModel
-
+@using DeTai.ThucTap.Domain.Common;
 @{
     ViewData["Title"] = "Index";
 }
@@ -19,7 +19,7 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.VocabularyCategory[0].User)
+                            @Html.DisplayNameFor(model => model.VocabularyCategory[0].ImageUrl)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.VocabularyCategory[0].Name)
@@ -40,6 +40,10 @@
                     @foreach (var item in Model.VocabularyCategory)
                     {
                         <tr>
+                            <td>
+                                <img style="width:100px!important;height:100px!important"
+                                     src="@string.Format("/{0}/{1}",Helper.PathImageCategory,item.ImageUrl) " />
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.User.Email)
                             </td>

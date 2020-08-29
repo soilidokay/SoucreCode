@@ -1,5 +1,9 @@
-import {PropsBase} from '../type';
-import {ParamNavigate, KeyNavigate} from '../Params';
+import {PropsBase, LoginPropsBase} from '../type';
+import {
+  ParamNavigate,
+  KeyNavigate,
+  ParamStackNavigateLoginList,
+} from '../Params';
 import {
   EventListenerCallback,
   EventMapCore,
@@ -9,6 +13,10 @@ import {StackNavigationEventMap} from '@react-navigation/stack/lib/typescript/sr
 
 export interface IScreenPropsBase<RouteName extends keyof ParamNavigate>
   extends PropsBase<RouteName> {}
+
+export interface IScreenLoginPropsBase<
+  RouteName extends keyof ParamStackNavigateLoginList
+> extends LoginPropsBase<RouteName> {}
 
 export interface IHomeScreenProps extends IScreenPropsBase<KeyNavigate.Home> {}
 export interface IGroupDetailScreenProps

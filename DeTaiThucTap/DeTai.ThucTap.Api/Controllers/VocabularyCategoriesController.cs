@@ -144,7 +144,8 @@ namespace DeTai.ThucTap.Api.Controllers
                     }
 
                     vocabularyCategory.UserId = user.Id;
-
+                    vocabularyCategory.IsPublish = true;
+                    vocabularyCategory.IsShare = true;
                     vocabularyCategory = _context.VocabularyCategories.Add(vocabularyCategory).Entity;
                     await _context.SaveChangesAsync();
                     vocabularyCategory.Image = null;

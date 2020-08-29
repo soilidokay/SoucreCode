@@ -1,10 +1,38 @@
 import {IUserProfile, TokenType} from './type';
-
+import {Config} from 'assets/Config';
+import {HttpServiceBase} from 'Providers/Services/Gateways/HttpServiceBase';
+import {Alert} from 'react-native';
+import GetWays from '../Services/Gateways';
 class UserProfile implements IUserProfile {
-  private Token: TokenType =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiQWRtaW4iLCJ1bmlxdWVfbmFtZSI6InRhaW5ndXllbi5udHQuOTdAZ21haWwuY29tIiwibmFtZWlkIjoiZjJmYzZjNzEtMzFmMy00NzhmLWEzYTEtN2ZhNDRjZmQzNTNlIiwibmJmIjoxNTk4MzY2NDMwLCJleHAiOjE2MDA5NTg0MzAsImlhdCI6MTU5ODM2NjQzMH0.K4CCDJU4wpHD_mwPq607zOy49nO7_0IYS6cPM8M7rBE';
+  private _Email?: string;
+  public ActionNavigateApp?: (isLogin: boolean) => void = undefined;
+  private Token: TokenType = null;
   getToken = () => this.Token;
   getTokenHeader = () => 'Bearer ' + this.Token;
+
+  isLogin = () => {
+    return this.Token !== null;
+  };
+  getEmail = () => this._Email;
+  Logout = () => {
+    this.Token = null;
+    GetWays.defaults.headers.common.Authorization = this.getTokenHeader();
+    this.ActionNavigateApp && this.ActionNavigateApp(false);
+  };
+  Login = async (data: {UserName: string; PassWord: string}) => {
+    const service = new HttpServiceBase();
+    const Token = await service
+      .POST(Config.API_LOGIN, data, {})
+      .catch(() => '');
+    if (Token) {
+      this.Token = Token;
+      this._Email = data.UserName;
+      GetWays.defaults.headers.common.Authorization = this.getTokenHeader();
+      this.ActionNavigateApp && this.ActionNavigateApp(true);
+    } else {
+      Alert.alert('Please, Checking info login again!');
+    }
+  };
 }
 
 export default new UserProfile();

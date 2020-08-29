@@ -35,6 +35,16 @@ class LearningGoalService extends ServiceBase {
       {},
     );
   };
+  PostVocabularyToLearningGoal = (data: {
+    VocabularyId: string;
+    LearningGoalId: string;
+  }) => {
+    return LearningGoalHttpService.POST(
+      Config.API_POST_VOCABULARY_LEARNING,
+      data,
+      {},
+    );
+  };
   DeleteVocabulary = (param: {
     LearningGoalId: string;
     VocabularyId: string;

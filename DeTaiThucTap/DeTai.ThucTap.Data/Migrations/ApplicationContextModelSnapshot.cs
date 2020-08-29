@@ -99,8 +99,8 @@ namespace DeTai.ThucTap.Data.Migrations
                     b.Property<bool>("IsLoop")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LongTime")
-                        .HasColumnType("int");
+                    b.Property<long>("LongTime")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

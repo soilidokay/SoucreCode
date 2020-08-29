@@ -7,21 +7,28 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DeTai.ThucTap.Data;
 using DeTai.ThucTap.Domain.Entities;
+using DeTai.ThucTap.Application.Interfaces;
+using DeTai.ThucTap.Domain.Common;
 
 namespace DeTai.ThucTap.Api.Areas.Admin.Pages.VocabularyPage
 {
     public class CreateModel : PageModel
     {
         private readonly DeTai.ThucTap.Data.ApplicationContext _context;
+        private readonly IManagerImages _ManagerImages;
 
-        public CreateModel(DeTai.ThucTap.Data.ApplicationContext context)
+        public CreateModel(
+            DeTai.ThucTap.Data.ApplicationContext context,
+            IManagerImages managerImages
+            )
         {
             _context = context;
+            _ManagerImages = managerImages;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["VocabularyCategoryId"] = new SelectList(_context.VocabularyCategories, "Id", "Name");
+            ViewData["VocabularyCategoryId"] = new SelectList(_context.VocabularyCategories, "Id", "Name");
             return Page();
         }
 
@@ -32,15 +39,26 @@ namespace DeTai.ThucTap.Api.Areas.Admin.Pages.VocabularyPage
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return Page();
+                Vocabulary.Id = Guid.NewGuid();
+                string filename = await _ManagerImages.SaveImageAsync(
+                    Vocabulary.Image, Helper.PathImageVocabulary,
+                    Vocabulary.Id.ToString());
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    Vocabulary.ImageUrl = filename;
+                    _context.Add(Vocabulary);
+                    await _context.SaveChangesAsync();
+                    return RedirectToPage("./Index");
+                }
+
             }
+            return Page();
+            //_context.Vocabularies.Add(Vocabulary);
+            //await _context.SaveChangesAsync();
 
-            _context.Vocabularies.Add(Vocabulary);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
+            //return RedirectToPage("./Index");
         }
     }
 }

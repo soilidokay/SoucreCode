@@ -1,78 +1,83 @@
 ﻿@page
 @model DeTai.ThucTap.Api.Areas.Admin.Pages.VocabularyPage.IndexModel
+@using DeTai.ThucTap.Domain.Common;
 
 @{
     ViewData["Title"] = "Index";
 }
-    <p>
-        <a class="btn btn-success" asp-page="Create">Create New</a>
-    </p>
-    <div class="card">
-        <div class="card-header card-header-primary">
-            <h4 class="card-title ">Vocabulary</h4>
-            <p class="card-category"> Here is a subtitle for this table</p>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
+<p>
+    <a class="btn btn-success" asp-page="Create">Create New</a>
+</p>
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title ">Vocabulary</h4>
+        <p class="card-category"> Here is a subtitle for this table</p>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
 
-                <table class="table">
-                    <thead>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Vocabulary[0].Image)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Vocabulary[0].Word)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Vocabulary[0].WordVN)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Vocabulary[0].IsShare)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Vocabulary[0].IsPublish)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Vocabulary[0].VocabularyCategory)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Vocabulary)
+                    {
                         <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Vocabulary[0].Word)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Vocabulary[0].WordVN)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Vocabulary[0].Image)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Vocabulary[0].IsShare)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Vocabulary[0].IsPublish)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Vocabulary[0].VocabularyCategory)
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Vocabulary)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Word)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.WordVN)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Image)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsShare)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsPublish)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.VocabularyCategory.Id)
-                                </td>
-                                <td>
-                                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                            <td>
+                                <img style="width:100px!important;height:100px!important"
+                                     src="@string.Format("/{0}/{1}",Helper.PathImageVocabulary,item.ImageUrl) " />
 
-            </div>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Word)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.WordVN)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsShare)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsPublish)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VocabularyCategory.Name)
+                            </td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
         </div>
     </div>
+</div>
 
 

@@ -27,7 +27,7 @@ namespace DeTai.ThucTap.Api.Controllers
         private readonly JwtSetting _JwtSetting;
         public TokenController(
             UserManager<ApplicationUser> userManager,
-            JwtSetting jwtSetting, 
+            JwtSetting jwtSetting,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager
             )
@@ -40,10 +40,10 @@ namespace DeTai.ThucTap.Api.Controllers
         [HttpPost]
         public async Task AddRole(string Name)
         {
-           // await _SignInManager.SignInAsync(await _UserManager.FindByNameAsync("tainguyen.ntt.97@gmail.com"),true);
-         //   await _SignInManager.SignOutAsync();
-           //await _RoleManager.CreateAsync(new IdentityRole { Name = "Admin" });
-           //await _RoleManager.CreateAsync(new IdentityRole { Name = "User" });
+            // await _SignInManager.SignInAsync(await _UserManager.FindByNameAsync("tainguyen.ntt.97@gmail.com"),true);
+            //   await _SignInManager.SignOutAsync();
+            //await _RoleManager.CreateAsync(new IdentityRole { Name = "Admin" });
+            //await _RoleManager.CreateAsync(new IdentityRole { Name = "User" });
             //await _UserManager.AddToRoleAsync(await _UserManager.FindByNameAsync("tainguyen.ntt.97@gmail.com"), "Admin");
         }
         [HttpGet]
@@ -87,7 +87,7 @@ namespace DeTai.ThucTap.Api.Controllers
             return tokenString;
         }
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> Login([FromForm] UserDTO userDTO)
         {
             var result = await _SignInManager.PasswordSignInAsync(userDTO.UserName, userDTO.PassWord, false, true);
             if (result.Succeeded)
@@ -100,7 +100,7 @@ namespace DeTai.ThucTap.Api.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> Register([FromForm] UserDTO userDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -112,6 +112,7 @@ namespace DeTai.ThucTap.Api.Controllers
                 Email = userDTO.UserName
             };
             var result = await _UserManager.CreateAsync(user, userDTO.PassWord);
+            await _UserManager.AddToRoleAsync(user, "User");
             if (result.Succeeded)
             {
                 return Ok(await GenerateToken(user));

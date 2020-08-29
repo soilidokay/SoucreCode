@@ -4,7 +4,7 @@ import {PropsCategoryDetail} from 'Views/type';
 import VocabularyService from 'Providers/Services/VocabularyService';
 import HocServices from 'Providers/Services/HocServices';
 import ContentCategory from 'Views/_Components/ContentCategory';
-import {Vocabulary} from 'Providers/Models/type';
+import {Vocabulary, LearningGoal} from 'Providers/Models/type';
 import LayoutItemVocabulary from 'Views/_Layouts/LayoutItemVocabulary';
 import ViewIcon from 'Views/_Components/ViewIcon';
 import Colors from 'assets/Colors';
@@ -15,6 +15,9 @@ import {ActionParamVocabularies} from 'Providers/Services/Gateways/type';
 import createModelFormContent, {ModalForm} from 'Views/_Components/ModalForm';
 import {Config} from 'assets/Config';
 import {KeyNavigate} from 'Providers/Navigates/Params';
+import Entypo from 'react-native-vector-icons/Entypo';
+import LearningGoalService from 'Providers/Services/LearningGoalService';
+import {MenuModel} from 'Views/_Components/MenuModel';
 
 const FormVocabulary = createModelFormContent<Vocabulary>({
   Image: {
@@ -34,6 +37,7 @@ const FormVocabulary = createModelFormContent<Vocabulary>({
 
 class CategoryDetail extends PureComponent<PropsCategoryDetail> {
   private refModal = createRef<ModalForm<Vocabulary>>();
+  private refMenu = createRef<MenuModel>();
   private isOwner = false;
   constructor(props: PropsCategoryDetail) {
     super(props);
@@ -47,7 +51,6 @@ class CategoryDetail extends PureComponent<PropsCategoryDetail> {
       IsOwner: this.isOwner,
     });
   };
-  onPressAddToList = () => {};
   componentDidMount = async () => {};
   onPressDelete = (data: Vocabulary) => {
     Alert.alert('Delete', `Are you sure delete "${data.Word ?? ''}"?`, [
@@ -126,6 +129,12 @@ class CategoryDetail extends PureComponent<PropsCategoryDetail> {
                 />
               </>
             )}
+            <ButtonIcon
+              onPress={() => this.onPressAddToList(item)}
+              colorIcon={Colors.LightGreen}
+              IconComponent={Entypo}
+              icon={'add-to-list'}
+            />
             <ViewIcon icon={'heart'} />
           </>
         }
@@ -139,6 +148,21 @@ class CategoryDetail extends PureComponent<PropsCategoryDetail> {
         }
       />
     );
+  };
+  renderItemMenu = ({item}: {item: LearningGoal; index: number}) => {
+    return <Text style={styles.textMenu}>{item.Name}</Text>;
+  };
+  onPressAddToList = async (data: Vocabulary) => {
+    this.refMenu.current?.Show({
+      data: data ? await LearningGoalService.GetLearningGoals() : [],
+      renderItem: this.renderItemMenu,
+      onSubmit: async (item: LearningGoal) => {
+        await LearningGoalService.PostVocabularyToLearningGoal({
+          VocabularyId: data.Id ?? '',
+          LearningGoalId: item.Id,
+        });
+      },
+    });
   };
   onPressAdd = () => {
     this.refModal.current?.Show({onSubmit: this.onSubmitAdd});
@@ -170,6 +194,7 @@ class CategoryDetail extends PureComponent<PropsCategoryDetail> {
           visible={true}
           animationType={'slide'}
         />
+        <MenuModel ref={this.refMenu} />
       </View>
     );
   }
@@ -196,5 +221,8 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
+  },
+  textMenu: {
+    textAlign: 'center',
   },
 });

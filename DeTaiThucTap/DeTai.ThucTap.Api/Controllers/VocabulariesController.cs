@@ -36,16 +36,27 @@ namespace DeTai.ThucTap.Api.Controllers
 
         // GET: api/Vocabularies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VocabularyBase>>> GetVocabularies([FromQuery] Guid CategoryId)
+        public async Task<ActionResult<IEnumerable<VocabularyBase>>> GetVocabularies([FromQuery] Guid? CategoryId)
         {
-            return await _context.Vocabularies
-                .Where(x => x.VocabularyCategoryId == CategoryId)
-                //.Select(x => new VocabularyDTO(x)
-                //{
-                //    Pronunciations = x.Pronunciations,
-                //    Phrases = x.Phrases
-                //})
-                .ToListAsync();
+
+            var sqry = _context.Vocabularies
+            .Where(x => x.IsShare && x.IsPublish);
+            if (CategoryId.HasValue)
+            {
+                sqry = sqry.Where(x => x.VocabularyCategoryId == CategoryId);
+            }
+            var result = await sqry.Select(x => new VocabularyDTO(x)).ToListAsync();
+
+
+            foreach (var item in result)
+            {
+                item.Phrases = _context.Phrases
+                    .Where(y => y.VocabularyId == item.Id)
+                    .Take(1)
+                    .Select(y => y as PhraseBase).ToArray();
+            }
+
+            return Ok(result);
         }
         [HttpGet]
         // GET: api/Vocabularies/5
@@ -166,6 +177,8 @@ namespace DeTai.ThucTap.Api.Controllers
                 if (!string.IsNullOrEmpty(filename))
                 {
                     vocabulary.ImageUrl = filename;
+                    vocabulary.IsPublish = true;
+                    vocabulary.IsShare = true;
                     vocabulary = _context.Vocabularies.Add(vocabulary).Entity;
                     await _context.SaveChangesAsync();
                     vocabulary.Image = null;

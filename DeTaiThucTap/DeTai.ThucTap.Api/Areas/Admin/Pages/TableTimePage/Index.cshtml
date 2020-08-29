@@ -38,31 +38,29 @@
                 <tbody>
                     @foreach (var item in Model.CalendarReminder)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TableTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LongTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsLoop)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LearningGoal.Id)
-                            </td>
-                            <td>
-                                <a asp-page="./Edit" asp-route-id="@item.IdLearningGoal">Edit</a> |
-                                <a asp-page="./Details" asp-route-id="@item.IdLearningGoal">Details</a> |
-                                <a asp-page="./Delete" asp-route-id="@item.IdLearningGoal">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TableTime)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.LongTime)
+                        </td>*@
+                        <td>
+                            @(new DateTime(item.LongTime).ToShortTimeString())
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsLoop)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LearningGoal.Name)
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

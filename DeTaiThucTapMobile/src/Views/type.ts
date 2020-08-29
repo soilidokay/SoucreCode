@@ -7,14 +7,25 @@ import {
   TableTime,
 } from 'Providers/Models/type';
 import {FlatListProps, FlatList} from 'react-native/index';
-import {StackScreenProps} from 'Providers/Navigates/Custom/type';
-import {ParamNavigate, KeyNavigate} from 'Providers/Navigates/Params';
+import {
+  StackScreenProps,
+  StackScreenLoginProps,
+} from 'Providers/Navigates/Custom/type';
+import {
+  ParamNavigate,
+  KeyNavigate,
+  ParamStackNavigateLoginList,
+  KeyNavigateLogin,
+} from 'Providers/Navigates/Params';
 import {TIconComponent} from 'Providers/Navigates/type';
 import {GestureResponderEvent} from 'react-native/index';
 export interface PropComponentApp {
   data?: any[] | any;
   refresh: () => void;
 }
+export interface LoginPropsView<
+  RouteName extends keyof ParamStackNavigateLoginList
+> extends PropComponentApp, StackScreenLoginProps<RouteName> {}
 
 export interface PropsView<RouteName extends keyof ParamNavigate>
   extends PropComponentApp,
@@ -22,7 +33,14 @@ export interface PropsView<RouteName extends keyof ParamNavigate>
 
 export interface PropsHome extends PropsView<KeyNavigate.Home> {
   theme?: IHomeTheme;
-  data?: [GroupCategory[], LearningGoal[]];
+  data?: [GroupCategory[], LearningGoal[], Vocabulary[]];
+}
+export enum ModeActive {
+  carousel,
+  List,
+}
+export interface StateHome {
+  modeActive: ModeActive;
 }
 export interface PropsGroupDetail extends PropsView<KeyNavigate.GroupDetail> {
   data?: VocabularyCategory[];
@@ -60,7 +78,7 @@ export interface PropsLearningGoal extends PropsView<KeyNavigate.LearningGoal> {
 export interface PropsTableTime extends PropsView<KeyNavigate.TimeTable> {
   data?: TableTime[];
 }
-
+export interface PropsUserManage extends PropsView<KeyNavigate.ExtendFeature> {}
 export class FlatListLearningGold extends FlatList<LearningGoal> {}
 export declare type FlatListLearningGoldProp = FlatListProps<LearningGoal>;
 
@@ -74,4 +92,11 @@ export declare type FlatListTableTimeProp = FlatListProps<TableTime>;
 export interface ContentVocabularyProps {
   item?: Vocabulary;
   onPress?: (event: GestureResponderEvent) => void;
+}
+
+export interface PropsLogin extends LoginPropsView<KeyNavigateLogin.Login> {}
+export interface PropsRegister
+  extends LoginPropsView<KeyNavigateLogin.Register> {}
+export interface StateLogin {
+  isProcess: boolean;
 }

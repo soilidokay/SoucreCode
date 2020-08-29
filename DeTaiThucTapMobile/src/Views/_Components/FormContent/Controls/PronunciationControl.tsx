@@ -9,6 +9,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {Config} from 'assets/Config';
 import RNFS from 'react-native-fs';
 import SingleSound from 'Providers/CustomLibrary/Sound';
+// import RNFetchBlob from 'rn-fetch-blob';
 SingleSound.setCategory('Playback');
 SingleSound.setMode('SpokenAudio');
 const PATH_SOUND =
@@ -18,10 +19,26 @@ const chooseAudio = async () => {
   const response = await DocumentPicker.pick({
     type: [DocumentPicker.types.audio],
   });
+  // const Info = await RNFetchBlob.fs.stat(response.uri);
+  // const extension = Info.filename.split('.').pop();
+  // console.log(Info)
+
+  let isExist = await RNFS.exists(PATH_SOUND + response?.name);
+  if (!isExist) {
+    await RNFS.mkdir(PATH_SOUND);
+  }
+  await RNFS.unlink(
+    PATH_SOUND + response?.name ?? 'test.txt',
+    // eslint-disable-next-line no-console
+  ).catch(console.log);
+  await RNFS.copyFile(response.uri, PATH_SOUND + response?.name).catch(
+    console.log,
+  );
+
   return {
     uri: response.uri,
     type: response.type,
-    name: response.name,
+    name: response?.name,
   };
 };
 const PronunciationControl: FC<IPronunciationControl> = (props) => {
@@ -43,6 +60,11 @@ const PronunciationControl: FC<IPronunciationControl> = (props) => {
               state.source === undefined && state.sourceDefault === undefined
             }
             onPress={() => {
+              console.log(
+                typeof state.source === 'undefined'
+                  ? state.sourceDefault
+                  : PATH_SOUND + state.source?.name,
+              );
               ref.current.Sound?.release();
               ref.current.Sound = new SingleSound(
                 typeof state.source === 'undefined'
@@ -76,18 +98,7 @@ const PronunciationControl: FC<IPronunciationControl> = (props) => {
               try {
                 const source = await chooseAudio();
 
-                let isExist = await RNFS.exists(PATH_SOUND + source?.name);
-                if (!isExist) {
-                  await RNFS.mkdir(PATH_SOUND);
-                }
-                await RNFS.unlink(
-                  PATH_SOUND + state.source?.uri ?? 'test.txt',
-                  // eslint-disable-next-line no-console
-                ).catch(console.log);
-                await RNFS.copyFile(
-                  source?.uri ?? '',
-                  PATH_SOUND + source?.name,
-                );
+                console.log({source});
                 if (source) {
                   props.ActionEvent.onChangValue(source);
                   setState((st) => ({...st, source: source}));

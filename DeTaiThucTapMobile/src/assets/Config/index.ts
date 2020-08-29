@@ -14,6 +14,8 @@ export const Config = {
   API_POST_LEARNING_GOAL: '/api/LearningGoals/PostLearningGoal',
   API_PUT_LEARNING_GOAL: '/api/LearningGoals/PutLearningGoal',
   API_POST_CATEGORY_LEARNING: '/api/LearningGoals/PostCategoryToLearningGoal',
+  API_POST_VOCABULARY_LEARNING:
+    '/api/LearningGoals/PostVocabularyToLearningGoal',
   API_DELETE_LEARNING_GOAL: '/api/LearningGoals/DeleteLearningGoal',
   API_POST_VOCABULARY: '/api/Vocabularies/PostVocabulary',
   API_POST_PHRASE: '/api/Phrases/PostPhrase',
@@ -31,4 +33,6 @@ export const Config = {
   API_POST_TABLE_TIMES: '/api/CalendarReminders/PostCalendarReminder',
   API_PUT_TABLE_TIMES: '/api/CalendarReminders/PutCalendarReminder',
   API_DELETE_TABLE_TIMES: '/api/CalendarReminders/DeleteCalendarReminder',
+  API_LOGIN: '/api/Token/Login',
+  API_REGISTER: '/api/Token/Register',
 };

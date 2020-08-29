@@ -47,6 +47,20 @@ export declare type ParamStackNavigateList = {
   LearningGoalDetail: IParamLearningGoalDetailScreen;
 } & ParamListNavigateBase;
 
+export interface IParamLoginScreen extends IParamNavigates {}
+export interface IParamRegisterScreen extends IParamNavigates {}
+
+export declare type ParamStackNavigateLoginList = {
+  Login: IParamLoginScreen;
+  Register: IParamRegisterScreen;
+} & ParamListNavigateBase;
+
+export enum KeyNavigateLogin {
+  Login = 'Login',
+  Default = 'Default',
+  Register = 'Register',
+}
+
 export declare type ParamNavigate = ParamListNavigateBase &
   ParamListTabNavigate &
   ParamStackNavigateList;

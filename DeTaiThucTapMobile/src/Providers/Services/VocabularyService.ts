@@ -6,7 +6,7 @@ import {Config} from 'assets/Config';
 
 class VocabularyService extends ServiceBase {
   GetVocabularies = (
-    ParamRequest: ActionParamVocabularies,
+    ParamRequest?: ActionParamVocabularies,
   ): Promise<Vocabulary[]> => {
     return this.GetData({
       Action: VocabularyHttpService.GetGroupCategories,

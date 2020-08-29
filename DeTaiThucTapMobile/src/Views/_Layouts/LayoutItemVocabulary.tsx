@@ -20,7 +20,7 @@ export default LayoutItemVocabulary;
 
 const styles = StyleSheet.create({
   container: {
-    height: 100,
+    height: 150,
     padding: 2,
     borderRadius: 5,
   },

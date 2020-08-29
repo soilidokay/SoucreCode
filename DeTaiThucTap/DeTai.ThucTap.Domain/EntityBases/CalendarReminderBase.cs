@@ -14,7 +14,8 @@ namespace DeTai.ThucTap.Domain.EntityBases
         public string Name { get; set; }
         public string Description { get; set; }
         public byte TableTime { get; set; }
-        public int LongTime { get; set; }
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        public long LongTime { get; set; }
         public bool IsLoop { get; set; }
     }
 }

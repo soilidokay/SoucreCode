@@ -14,8 +14,8 @@ namespace DeTai.ThucTap.Domain.Common
 
         public static readonly string RoleAmidn = "b17504a2-b206-454b-9dfa-78473f95dbce";
         public static readonly string RoleUser = "b3c7a370-3a66-4ba6-ab93-57a5805cc2c9";
-        public static readonly string PathImageCategory = "images\\VocabularyCategory";
-        public static readonly string PathImageVocabulary = "images\\Vocabulary";
-        public static readonly string PathAudioPronunciation = "Audio\\Pronunciation";
+        public static readonly string PathImageCategory = "images/VocabularyCategory";
+        public static readonly string PathImageVocabulary = "images/Vocabulary";
+        public static readonly string PathAudioPronunciation = "Audio/Pronunciation";
     }
 }

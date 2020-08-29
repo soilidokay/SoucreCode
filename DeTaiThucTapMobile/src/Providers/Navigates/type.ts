@@ -1,6 +1,14 @@
 import {ITabNavigateTheme} from 'assets/themes/type';
-import {IParamHomeScreens, ParamNavigate} from './Params';
-import {StackScreenProps, TabNavigationOptions} from './Custom/type';
+import {
+  IParamHomeScreens,
+  ParamNavigate,
+  ParamStackNavigateLoginList,
+} from './Params';
+import {
+  StackScreenProps,
+  TabNavigationOptions,
+  StackScreenLoginProps,
+} from './Custom/type';
 
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -15,12 +23,27 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
+export interface LoginPropsBase<
+  RouteName extends keyof ParamStackNavigateLoginList
+> extends StackScreenLoginProps<RouteName> {
+  theme?: ITabNavigateTheme;
+}
+
 export interface PropsBase<RouteName extends keyof ParamNavigate>
   extends StackScreenProps<RouteName> {
   theme?: ITabNavigateTheme;
 }
 
 export interface IScreenComponent<RouteName extends keyof ParamNavigate> {
+  name: RouteName;
+  component: React.ComponentType<any>;
+  initialParams?: IParamHomeScreens;
+  options?: TabNavigationOptions;
+}
+
+export interface IScreenLoginComponent<
+  RouteName extends keyof ParamStackNavigateLoginList
+> {
   name: RouteName;
   component: React.ComponentType<any>;
   initialParams?: IParamHomeScreens;

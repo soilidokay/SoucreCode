@@ -8,16 +8,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DeTai.ThucTap.Data;
 using DeTai.ThucTap.Domain.Entities;
+using DeTai.ThucTap.Application.Interfaces;
+using DeTai.ThucTap.Domain.Common;
 
 namespace DeTai.ThucTap.Api.Areas.Admin.Pages.VocabularyPage
 {
     public class EditModel : PageModel
     {
         private readonly DeTai.ThucTap.Data.ApplicationContext _context;
+        private readonly IManagerImages _ManagerImages;
 
-        public EditModel(DeTai.ThucTap.Data.ApplicationContext context)
+        public EditModel(
+            DeTai.ThucTap.Data.ApplicationContext context,
+            IManagerImages managerImages
+            )
         {
             _context = context;
+            _ManagerImages = managerImages;
         }
 
         [BindProperty]
@@ -54,6 +61,19 @@ namespace DeTai.ThucTap.Api.Areas.Admin.Pages.VocabularyPage
 
             try
             {
+                if (Vocabulary.Image != null)
+                {
+                    string filename = await _ManagerImages.SaveImageAsync(
+                        Vocabulary.Image, Helper.PathImageVocabulary, Vocabulary.Id.ToString());
+                    if (string.IsNullOrEmpty(filename))
+                    {
+                        throw new Exception("Save is fail!");
+                    }
+                    else
+                    {
+                        Vocabulary.ImageUrl = filename;
+                    }
+                }
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

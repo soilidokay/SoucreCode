@@ -19,6 +19,7 @@ import AppContext from 'Providers/Contexts/AppContext';
 import createModelFormContent, {ModalForm} from 'Views/_Components/ModalForm';
 import LearningGoalService from 'Providers/Services/LearningGoalService';
 import {TDataItem} from 'Views/_Components/FormContent/type';
+import ReactNativeAN from 'DeclareLibs/ReactNativeAN';
 
 const FormLearning = createModelFormContent<Model.TableTime>({
   LongTime: {Type: 'TimePicker', option: {}},
@@ -115,7 +116,45 @@ class TableTime extends PureComponent<PropsTableTime> {
       });
     this.refModal.current?.close();
   };
-  onPressAdd = () => {
+  onPressAdd = async () => {
+    // const fireDate = ReactNativeAN.parseDate(new Date(Date.now() + 10000)); // set exact date time | Format: dd-MM-yyyy HH:mm:ss
+
+    // const alarmNotifData = {
+    //   title: 'My Notification Title1',
+    //   message: 'My Notification Message',
+    //   channel: 'my_channel_id',
+    //   small_icon: 'ic_launcher',
+    //   sound_name: 'sao.mp3',
+
+    //   // You can add any additional data that is important for the notification
+    //   // It will be added to the PendingIntent along with the rest of the bundle.
+    //   // e.g.
+    //   data: {foo: 'bar'},
+    // };
+    // const alarm = await ReactNativeAN.scheduleAlarm({
+    //   ...alarmNotifData,
+    //   fire_date: fireDate,
+    // });
+    // console.log(alarm); // { id: 1 }
+
+    //Delete Scheduled Alarm
+    //ReactNativeAN.deleteAlarm(alarm.id);
+
+    //Delete Repeating Alarm
+    // ReactNativeAN.deleteRepeatingAlarm(alarm.id);
+
+    //Stop Alarm
+    //ReactNativeAN.stopAlarmSound();
+
+    //Send Local Notification Now
+    // ReactNativeAN.sendNotification(alarmNotifData);
+
+    //Get All Scheduled Alarms
+    // const alarms = await ReactNativeAN.getScheduledAlarms();
+
+    //Clear Notification(s) From Notification Center/Tray
+    // ReactNativeAN.removeFiredNotification(alarm.id);
+    // ReactNativeAN.removeAllFiredNotifications();
     this.refModal.current?.Show({onSubmit: this.onSubmitAdd});
   };
   onSubmitAdd = async (data: Model.TableTime) => {

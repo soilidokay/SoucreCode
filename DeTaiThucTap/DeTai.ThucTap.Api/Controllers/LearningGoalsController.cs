@@ -62,6 +62,34 @@ namespace DeTai.ThucTap.Api.Controllers
             return Ok();
         }
 
+
+        [HttpPost]
+        public async Task<ActionResult> PostVocabularyToLearningGoal([FromForm] Guid VocabularyId, [FromForm] Guid LearningGoalId)
+        {
+            var temps = await _context.Vocabularies.FindAsync(VocabularyId);
+
+            if (temps == null) return NotFound();
+            var Detail = await _context.LearningGoalDetails
+                .SingleOrDefaultAsync(x =>
+                x.LearningGoalId == LearningGoalId
+                && x.VocabularyId == VocabularyId);
+
+            if (Detail != null) return Ok();
+
+            var LearningGoal = await _context.LearningGoals.FindAsync(LearningGoalId);
+            if (LearningGoal == null) return NotFound();
+
+
+            _context.LearningGoalDetails.Add(new LearningGoalDetails
+            {
+                VocabularyId = VocabularyId,
+                LearningGoalId = LearningGoal.Id
+            });
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
         // GET: api/LearningGoals
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LearningGoalBase>>> GetLearningGoals()
